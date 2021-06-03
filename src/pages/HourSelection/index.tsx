@@ -9,7 +9,7 @@ import {
 } from '../../context';
 import { registerUserForTest } from '../../firebase';
 import { SlotData, ChosenHour } from '../../shared';
-import { Flex, Card, SlackLink } from '../../components';
+import { Flex, Card } from '../../components';
 import MappedHours from './MappedHours';
 
 export default function HourSelection(): JSX.Element {
@@ -145,7 +145,6 @@ export default function HourSelection(): JSX.Element {
           Submit
         </Button>
       </Flex>
-      <SlackLink />
       <Flex row align justify style={{ padding: '8px', margin: '8px' }}>
         <Button
           type="default"

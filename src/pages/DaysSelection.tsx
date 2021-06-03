@@ -39,7 +39,7 @@ import {
   Guideline,
   guidelines,
 } from '../shared';
-import { Flex, Card, Header, SlackLink } from '../components';
+import { Flex, Card, Header } from '../components';
 
 dayjs.extend(relativeTime);
 
@@ -417,19 +417,9 @@ export default function DaysSelection(): JSX.Element {
               <li>
                 Technical problems with app?{' '}
                 <a
-                  href="mailto:anna.gadacz@cognite.com?subject=COVID Project issue, fix fast pls"
+                  href="mailto:anna.gadacz@cognite.com?subject=CogIN Project issue, fix fast pls"
                   onClick={() => clickContactLinkTracker(user?.email, 'Anna')}>
                   Contact Anna!
-                </a>
-              </li>
-              <li>
-                Question about testing itself?{' '}
-                <a
-                  href="mailto:madeleine.olstad@cognite.com?subject=Question about testing"
-                  onClick={() =>
-                    clickContactLinkTracker(user?.email, 'Madeleine')
-                  }>
-                  Contact Madeleine!
                 </a>
               </li>
             </ul>
@@ -473,7 +463,6 @@ export default function DaysSelection(): JSX.Element {
           </StyledFlex>
         </Card>
       </Flex>
-      <SlackLink />
     </Flex>
   );
 }
