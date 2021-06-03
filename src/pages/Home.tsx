@@ -42,12 +42,12 @@ export default function Home(): JSX.Element {
 
   return (
     <Panel style={{ maxWidth: '500px' }}>
-      <Title level={2}>COVID test registration</Title>
+      <Title level={2}>Cog IN! Registration app</Title>
       <Title level={5}>Please log in with your Cognite account.</Title>
       <div id={GOOGLE_BUTTON_ID}></div>
       <p style={{ color: '#aaa' }}>
         Something not working?{' '}
-        <a href="mailto:anna.gadacz@cognite.com?subject=COVID Project issue, fix fast pls">
+        <a href="mailto:anna.gadacz@cognite.com?subject=CogIN issue, fix fast pls">
           Poke Anna
         </a>
         !

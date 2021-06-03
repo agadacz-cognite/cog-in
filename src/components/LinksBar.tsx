@@ -35,7 +35,7 @@ export const LinksBar = (): JSX.Element => {
   const onGithubClick = () => clickGithubLinkTracker(user?.email);
   const onMixpanelClick = () => clickMixpanelLinkTracker(user?.email);
 
-  const gitUrl = 'https://github.com/agadacz-cognite/covid-project';
+  const gitUrl = 'https://github.com/agadacz-cognite/cog-in';
   const mixpanelUrl =
     'https://eu.mixpanel.com/project/2375253/view/2919913/app/dashboards#id=1076659';
 

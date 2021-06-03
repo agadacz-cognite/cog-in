@@ -4,7 +4,7 @@ import { isDev } from '../shared';
 
 export const useMixpanel = (): void => {
   const [mixpanelLoaded, setMixpanelLoaded] = useState(false);
-  const token = process.env.REACT_APP_MIXPANEL;
+  const token = process.env.COGIN_APP_MIXPANEL;
 
   useEffect(() => {
     if (!token || mixpanelLoaded) {
@@ -22,9 +22,10 @@ type Track = {
 };
 
 export const track = ({ email, event, eventOptions = {} }: Track): void => {
+  const prefix = 'COGIN';
   try {
     mixpanel.identify(email);
-    mixpanel.track(event, {
+    mixpanel.track(`${prefix}_${event}`, {
       isDev,
       email,
       ...eventOptions,

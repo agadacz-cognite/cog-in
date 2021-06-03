@@ -3,13 +3,14 @@ import 'firebase/firestore';
 import { errorHandler } from '../shared';
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  authDomain: 'covid-project-a32a4.firebaseapp.com',
-  databaseURL: 'https://covid-project-a32a4.europe-west1.firebasedatabase.app',
-  projectId: 'covid-project-a32a4',
-  storageBucket: 'covid-project-a32a4.appspot.com',
+  apiKey: process.env.COGIN_APP_FIREBASE_API_KEY,
+  appId: process.env.COGIN_APP_FIREBASE_APP_ID,
+  messagingSenderId: process.env.COGIN_APP_FIREBASE_MESSAGING_SENDER_ID,
+  authDomain: 'cog-in.firebaseapp.com',
+  databaseURL: 'https://cog-in-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId: 'cog-in',
+  storageBucket: 'cog-in.appspot.com',
+  measurementId: process.env.COGIN_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 if (!firebase.apps.length) {
