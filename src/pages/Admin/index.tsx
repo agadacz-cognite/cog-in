@@ -80,12 +80,12 @@ export default function Admin(): JSX.Element {
     }
   };
   const onEditActiveRegistration = () =>
-    history.push(oldPaths.adminEditWeek.path(activeRegistration?.id));
+    history.push(oldPaths.adminEditEvent.path(activeRegistration?.id));
   const onActiveRegistrationClose = () => closeActiveRegistration();
   const onPreviewRegisteredUsers = () =>
     history.push(oldPaths.adminPreview.path(activeRegistration?.id));
   const onCreateNewRegistration = () =>
-    history.push(oldPaths.adminNewWeek.path());
+    history.push(oldPaths.adminNewEvent.path());
   const onSeeOldRegistrations = () =>
     history.push(oldPaths.adminArchive.path());
   const onBack = () => history.push(oldPaths.home.path());

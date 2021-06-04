@@ -97,16 +97,15 @@ export const sendEmailToUser = (
         slot => slot.id === testHour.slotId,
       );
       const translatedHour = translateHourIdToHour(week?.testHours, testHour);
-      const officeDays = week?.officeDays ?? [];
-      return `${week?.testDay ?? '<unknown>'} - ${
+      return `${week?.slotName ?? '<unknown>'} - ${
         translatedHour ?? '<unknown>'
-      } (office days: ${officeDays.join(',')})`;
+      }`;
     })
     .join(', ');
   const userFirstName =
     registeredUser.name?.split(' ')?.[0] ?? 'Unknown Person';
-  const subject = `💉 You have registered to a COVID test! Week ${week}`;
-  const content = `Hello ${userFirstName}! You just registered for the COVID test for the week ${week}. Dates when you can come to the office: ${userHours}.`;
+  const subject = `💉 You have registered to an event! Week ${week}`;
+  const content = `Hello ${userFirstName}! You just registered for an event for the week ${week}. Details: ${userHours}.`;
 
   sendEmail({
     email: registeredUser.email,
@@ -140,7 +139,7 @@ export const translateSlotsToHuman = (
       slot => slot.id === chosenHour.slotId,
     );
     const userHours = translateHourIdToHour(week?.testHours, chosenHour);
-    mappedSlots[`slot-${index}`] = `${week?.testDay ?? 'UNKNOWN'} - ${
+    mappedSlots[`slot-${index}`] = `${week?.slotName ?? 'UNKNOWN'} - ${
       userHours ?? 'UNKNOWN'
     }`;
   });
@@ -205,18 +204,18 @@ export const getUserTestHours = (
         slot => slot.id === chosenHour.slotId,
       );
       const userHours = translateHourIdToHour(week?.testHours, chosenHour);
-      return { testDay: week?.testDay, hours: userHours };
+      return { slotName: week?.slotName, hours: userHours };
     },
   );
   const testDates = userTestHours.map((userTestHour: any) => {
     const startDate = translateTestDateToTimestamp(
       (activeRegistration?.week[0]?.seconds ?? 0) * 1000,
-      userTestHour.testDay,
+      userTestHour.slotName,
       userTestHour.hours,
     );
     const endDate = translateTestDateToTimestamp(
       (activeRegistration?.week[0]?.seconds ?? 0) * 1000,
-      userTestHour.testDay,
+      userTestHour.slotName,
       userTestHour.hours,
     );
     endDate.setMinutes(endDate.getMinutes() + 20);

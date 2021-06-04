@@ -91,15 +91,15 @@ export default function NewRegistration(): JSX.Element {
   const onAddSlot = () => {
     const newSlot: SlotData = {
       id: uuid(),
-      testDay: 'Monday',
+      slotName: '',
+      slotSummary: '',
       testHours: [defaultNewHour],
-      officeDays: ['Monday'],
     };
     setSlots([...slots, newSlot]);
   };
-  const onTestDayChange = (id: string, value: any) => {
+  const onSlotNameChange = (id: string, value: any) => {
     const fixedSlots = slots.map(slot =>
-      slot.id === id ? { ...slot, testDay: value } : slot,
+      slot.id === id ? { ...slot, slotName: value } : slot,
     );
     setSlots(fixedSlots);
   };
@@ -109,9 +109,9 @@ export default function NewRegistration(): JSX.Element {
     );
     setSlots(fixedSlots);
   };
-  const onOfficeDaysChange = (id: string, value: any) => {
+  const onSlotSummaryChange = (id: string, value: any) => {
     const fixedSlots = slots.map(slot =>
-      slot.id === id ? { ...slot, officeDays: value } : slot,
+      slot.id === id ? { ...slot, slotSummary: value } : slot,
     );
     setSlots(fixedSlots);
   };
@@ -198,9 +198,9 @@ export default function NewRegistration(): JSX.Element {
               <Slot
                 slot={slot}
                 key={`slot-${index}`}
-                onTestDayChange={onTestDayChange}
+                onSlotNameChange={onSlotNameChange}
                 onTestHoursChange={onTestHoursChange}
-                onOfficeDaysChange={onOfficeDaysChange}
+                onSlotSummaryChange={onSlotSummaryChange}
                 onSlotDelete={onSlotDelete}
               />
             ))}

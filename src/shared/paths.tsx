@@ -61,8 +61,8 @@ type OldPaths =
   | 'home'
   | 'selection'
   | 'admin'
-  | 'adminNewWeek'
-  | 'adminEditWeek'
+  | 'adminNewEvent'
+  | 'adminEditEvent'
   | 'adminArchive'
   | 'adminPreview';
 export const oldPaths: { [path in OldPaths]: PathData } = {
@@ -82,13 +82,13 @@ export const oldPaths: { [path in OldPaths]: PathData } = {
     path: () => `${root}/admin`,
     staticPath: `${root}/admin`,
   },
-  adminNewWeek: {
-    path: () => `${root}/admin/newweek`,
-    staticPath: `${root}/admin/newweek`,
+  adminNewEvent: {
+    path: () => `${root}/admin/newevent`,
+    staticPath: `${root}/admin/newevent`,
   },
-  adminEditWeek: {
-    path: (weekId: string) => `${root}/admin/editweek/${weekId}`,
-    staticPath: `${root}/admin/editweek/:weekId`,
+  adminEditEvent: {
+    path: (weekId: string) => `${root}/admin/editevent/${weekId}`,
+    staticPath: `${root}/admin/editevent/:weekId`,
   },
   adminArchive: {
     path: () => `${root}/admin/archive`,

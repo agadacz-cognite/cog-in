@@ -109,16 +109,15 @@ export default function DaysSelection(): JSX.Element {
             week?.testHours,
             testHour,
           );
-          const officeDays = week?.officeDays ?? [];
-          return `${week?.testDay ?? '<unknown>'} - ${
+          return `${week?.slotName ?? '<unknown>'} - ${
             translatedHour ?? '<unknown>'
-          } (office days: ${officeDays.join(',')})`;
+          }`;
         })
         .join(', ');
       const userFirstName =
         usersRegistration?.name?.split(' ')?.[0] ?? 'Unknown Person';
-      const subject = `💉 You have deleted your COVID test registration - week ${week}`;
-      const content = `Hello ${userFirstName}! You just removed your appointnment for the COVID test for the week ${week}. Removed testing dates: ${userHours}.`;
+      const subject = '💉 You have deleted your COVID test registration';
+      const content = `Hello ${userFirstName}! You just removed your appointnment for the event ${week}. Removed registration: ${userHours}.`;
       setLoading(true);
       await removeUserRegistration(weekId, email);
       sendEmail({
@@ -212,11 +211,7 @@ export default function DaysSelection(): JSX.Element {
 
   const ifNoRegistration = (): JSX.Element | undefined => {
     if (!activeRegistration) {
-      return (
-        <p>
-          There is no active registration at the moment! Please try again later.
-        </p>
-      );
+      return <p>There is no active registration at the moment!</p>;
     }
     return undefined;
   };
@@ -359,7 +354,7 @@ export default function DaysSelection(): JSX.Element {
               return (
                 <Flex column align justify key={`your-slot-${index}`}>
                   <Title level={5}>
-                    {week?.testDay ?? '<unknown>'} - {userHours ?? '<unknown>'}
+                    {week?.slotName ?? '<unknown>'} - {userHours ?? '<unknown>'}
                   </Title>
                 </Flex>
               );

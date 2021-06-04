@@ -110,13 +110,11 @@ export default function MappedHours(props: MappedHoursProps): JSX.Element {
         fixedTestHour.totalPlaces - fixedTestHour.takenPlaces;
       const percentOfPlacesTaken = remainingPlaces / fixedTestHour.totalPlaces;
 
-      // const dupa = translateHourIdToHour(testHours);
-
       return (
         <Tooltip
           key={`mapped-hour-${index}-${hourId}-ok`}
           title={
-            !available && 'All of the slots for this hour are already taken :C'
+            !available && 'All of the places for this slot are already taken :C'
           }>
           <Choice
             key={`slot-${id}-${hourId}`}

@@ -58,7 +58,7 @@ export default function EditRegistration(): JSX.Element {
       notification.warning({
         message: 'Incomplete data',
         description:
-          'You must provide the starting and ending date of the week, for which this registration will be valid!',
+          'You must provide the starting and ending date of the week, for which this event will be valid!',
       });
       return;
     }
@@ -66,14 +66,14 @@ export default function EditRegistration(): JSX.Element {
       notification.warning({
         message: 'Incomplete data',
         description:
-          'You must provide the time when people can start registering for this week!',
+          'You must provide the time when people can start registering for this event!',
       });
       return;
     }
     if (!slots?.length) {
       notification.warning({
         message: 'Incomplete data',
-        description: 'You must provide at least one slot for registration!',
+        description: 'You must provide at least one slot for the event!',
       });
       return;
     }
@@ -111,15 +111,15 @@ export default function EditRegistration(): JSX.Element {
   const onAddSlot = () => {
     const newSlot: SlotData = {
       id: uuid(),
-      testDay: 'Monday',
+      slotName: '',
       testHours: [defaultNewHour],
-      officeDays: ['Monday'],
+      slotSummary: '',
     };
     setSlots([...slots, newSlot]);
   };
-  const onTestDayChange = (id: string, value: any) => {
+  const onSlotNameChange = (id: string, value: any) => {
     const fixedSlots = slots.map(slot =>
-      slot.id === id ? { ...slot, testDay: value } : slot,
+      slot.id === id ? { ...slot, slotName: value } : slot,
     );
     setSlots(fixedSlots);
   };
@@ -129,9 +129,9 @@ export default function EditRegistration(): JSX.Element {
     );
     setSlots(fixedSlots);
   };
-  const onOfficeDaysChange = (id: string, value: any) => {
+  const onSlotSummaryChange = (id: string, value: any) => {
     const fixedSlots = slots.map(slot =>
-      slot.id === id ? { ...slot, officeDays: value } : slot,
+      slot.id === id ? { ...slot, slotSummary: value } : slot,
     );
     setSlots(fixedSlots);
   };
@@ -146,7 +146,7 @@ export default function EditRegistration(): JSX.Element {
     <Flex column style={{ maxWidth: '1024px', margin: 'auto' }}>
       <Header>
         <Title level={2} style={{ marginBottom: '4px' }}>
-          Edit active registration
+          Edit active event
         </Title>
         <p>
           Logged in as {user?.displayName ?? '-'} ({user?.email ?? '-'})
@@ -157,7 +157,7 @@ export default function EditRegistration(): JSX.Element {
         <Flex row align justify style={{ flexWrap: 'wrap' }}>
           <Flex column>
             <Card
-              title="Select the week of the registration"
+              title="Select the week of the event"
               style={{ margin: '8px', maxWidth: '400px' }}>
               <Flex column align justify>
                 <DatePicker
@@ -176,14 +176,13 @@ export default function EditRegistration(): JSX.Element {
               </Flex>
             </Card>
             <Card
-              title="Select time when people can start registering"
+              title="Select time when registration opens"
               style={{ margin: '8px', maxWidth: '400px' }}>
               <Flex column align justify>
                 <p>
                   Date selected here will be the time from which people can
-                  start registering for their preferred time slots. This is to
-                  ensure that everyone have a fair chance to get the slot they
-                  want.
+                  start registering. This is to ensure that everyone have a fair
+                  chance to get the slot they want.
                 </p>
                 <DatePicker
                   selected={registrationOpenTime}
@@ -208,23 +207,20 @@ export default function EditRegistration(): JSX.Element {
               </Flex>
             </Card>
           </Flex>
-          <Card
-            title="Add slots for testing"
-            style={{ margin: '8px', maxWidth: '500px' }}>
+          <Card title="Add slots" style={{ margin: '8px', maxWidth: '500px' }}>
             <Flex column>
               <p>
-                Here you can choose a day when testing is carried out, hours
-                during which testing happens, and the days during which employee
-                is eligible to come to the office after test.
+                Here you can customize slots for people to choose when
+                registering.
               </p>
               {slots?.map((slot: SlotData, index: number) => {
                 return (
                   <Slot
                     slot={slot}
                     key={`slot-${index}`}
-                    onTestDayChange={onTestDayChange}
+                    onSlotNameChange={onSlotNameChange}
                     onTestHoursChange={onTestHoursChange}
-                    onOfficeDaysChange={onOfficeDaysChange}
+                    onSlotSummaryChange={onSlotSummaryChange}
                     onSlotDelete={onSlotDelete}
                   />
                 );
@@ -248,7 +244,7 @@ export default function EditRegistration(): JSX.Element {
           Cancel
         </Button>
         <Popconfirm
-          title="Are you sure you want to save your changes to active registration?"
+          title="Are you sure you want to save your changes to active event?"
           onConfirm={onEditActiveRegistration}
           okText="Do it"
           okButtonProps={{ danger: true }}
@@ -256,7 +252,7 @@ export default function EditRegistration(): JSX.Element {
           cancelText="Nope :c"
           placement="top">
           <Button type="primary" size="large" danger>
-            Save changes to active registration
+            Save changes to active event
           </Button>
         </Popconfirm>
       </Header>

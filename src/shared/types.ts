@@ -12,9 +12,9 @@ export type TestHourInSlot = {
 };
 export type SlotData = {
   id: string;
-  testDay: Day;
+  slotName: string;
+  slotSummary: string;
   testHours: TestHourInSlot[];
-  officeDays: Day[];
 };
 
 export type TestHour = {
@@ -49,9 +49,8 @@ export type RegisteredUser = {
   email: string;
   name: string;
   weekId: string;
-  manager: string;
+  comment?: string;
   registeredTimestamp: number;
-  vaccinated: boolean;
   testHours: ChosenHour[];
 };
 

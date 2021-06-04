@@ -52,7 +52,7 @@ export const getRegistrationsForThisWeek = async (
     .join(' - ');
   const allSlots = week.slots.map((slot: SlotData) => ({
     slotId: slot.id,
-    testDay: slot.testDay,
+    slotName: slot.slotName,
     testHours: slot.testHours,
   }));
 
@@ -107,15 +107,16 @@ export const getRegistrationsForThisWeek = async (
           userRegistrationHour?.length === 4
             ? `0${userRegistrationHour}`
             : userRegistrationHour;
-        const userRegistrationData = {
+        const userRegistrationData: any = {
           registeredAt: registeredUser?.registeredTimestamp ?? 0,
           name: registeredUser?.name ?? registeredUser?.email ?? '<unknown>',
-          manager: registeredUser?.manager ?? '<unknown>',
           hour: usersRegisteredHourFixed,
           email: registeredUser?.email ?? 'cogcovidtest@gmail.com',
-          vaccinated: registeredUser.vaccinated ? 'X' : '',
           registeredTooLate,
         };
+        if (registeredUser?.comment) {
+          userRegistrationData.comment = registeredUser?.comment;
+        }
         return userRegistrationData;
       });
       return users;
@@ -125,7 +126,7 @@ export const getRegistrationsForThisWeek = async (
   const finalData = {
     weekDate,
     usersRegistrationData: usersMappedToSlots,
-    weeks: week.slots.map((slot: SlotData) => slot.testDay),
+    weeks: week.slots.map((slot: SlotData) => slot.slotName),
   };
   return finalData;
 };
@@ -191,7 +192,7 @@ export const getRegistrationsForExcel = async (
           (userTestHour: ChosenHour) => userTestHour.slotId === slotId,
         );
         if (!userInThisSlot) {
-          return ['', '', '', '', '', ''];
+          return ['', '', '', '', ''];
         }
         const registeredHour = slotTestHours.find(
           (slotTestHour: TestHourInSlot) =>
@@ -205,9 +206,8 @@ export const getRegistrationsForExcel = async (
           '',
           '',
           registeredUser.name ?? registeredUser.email,
-          registeredUser.manager,
           usersRegisteredHour,
-          registeredUser.vaccinated ? 'X' : '',
+          registeredUser.comment,
         ];
         return field;
       });
@@ -224,11 +224,10 @@ export const getRegistrationsForExcel = async (
   const headers = [
     weekDate,
     ...week.slots.map((slot: SlotData) => [
-      slot.testDay.toUpperCase(),
+      slot.slotName.toUpperCase(),
       'Name',
-      'Manager',
       'Hour',
-      'Vaccinated?',
+      'Comment',
       '',
     ]),
   ];

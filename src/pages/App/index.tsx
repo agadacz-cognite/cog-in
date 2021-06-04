@@ -77,7 +77,7 @@ export default function App(): JSX.Element {
             <Admin />
           </Wrapper>
         </Route>
-        <Route exact path={oldPaths.adminNewWeek.staticPath}>
+        <Route exact path={oldPaths.adminNewEvent.staticPath}>
           <Wrapper background={background}>
             {isDev && <DevBanner />}
             <LinksBar />
@@ -85,7 +85,7 @@ export default function App(): JSX.Element {
             <NewRegistration />
           </Wrapper>
         </Route>
-        <Route exact path={oldPaths.adminEditWeek.staticPath}>
+        <Route exact path={oldPaths.adminEditEvent.staticPath}>
           <Wrapper background={background}>
             {isDev && <DevBanner />}
             <LinksBar />

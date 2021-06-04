@@ -1,41 +1,34 @@
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'moment/locale/en-gb';
-import { Select, Button, InputNumber, AutoComplete } from 'antd';
+import { Input, Button, InputNumber, AutoComplete } from 'antd';
 import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import { Flex } from '../../components';
 import { SlotData, TestHourInSlot } from '../../shared/types';
-import { possibleDays, possibleHours, defaultNewHour } from './utils';
+import { possibleHours, defaultNewHour } from './utils';
 
-const { Option } = Select;
 const { Option: OptionAutoComplete } = AutoComplete;
 
 type Props = {
   slot: SlotData;
 } & {
-  onTestDayChange: (id: string, value: any) => void;
+  onSlotNameChange: (id: string, value: any) => void;
   onTestHoursChange: (id: string, value: any) => void;
-  onOfficeDaysChange: (id: string, value: any) => void;
+  onSlotSummaryChange: (id: string, value: any) => void;
   onSlotDelete: (id: string) => void;
 };
 
 export default function Slot(props: Props): JSX.Element {
   const {
     slot,
-    onTestDayChange,
+    onSlotNameChange,
     onTestHoursChange,
-    onOfficeDaysChange,
+    onSlotSummaryChange,
     onSlotDelete,
   } = props;
-  const { id, testDay, testHours, officeDays } = slot;
-
-  const daysOptions = possibleDays.map((day: string) => (
-    <Option key={day} value={day}>
-      {day}
-    </Option>
-  ));
+  const { id, slotName, testHours, slotSummary } = slot;
 
   const onAddHour = () => {
     const newTestHour = {
@@ -92,37 +85,34 @@ export default function Slot(props: Props): JSX.Element {
       </Flex>
       <Flex row align style={{ margin: '4px 0' }}>
         <Flex row align style={{ flexGrow: 1 }}>
-          <span style={{ fontWeight: 'bold', minWidth: '80px' }}>Test day</span>
-          <Select
-            value={testDay}
-            onChange={value => onTestDayChange(id, value)}
-            style={{ marginLeft: '8px', flexGrow: 1 }}>
-            {possibleDays.map((day: string) => (
-              <Option key={day} value={day}>
-                {day}
-              </Option>
-            ))}
-          </Select>
+          <span style={{ fontWeight: 'bold', minWidth: '90px' }}>
+            Slot name
+          </span>
+          <Input
+            value={slotName}
+            onChange={event => onSlotNameChange(id, event.target.value)}
+            style={{ marginLeft: '8px', flexGrow: 1 }}
+          />
         </Flex>
       </Flex>
       <Flex row align style={{ margin: '4px 0' }}>
-        <span style={{ fontWeight: 'bold', minWidth: '80px' }}>
-          Office days
+        <span style={{ fontWeight: 'bold', minWidth: '90px' }}>
+          Slot summary
         </span>
-        <Select
-          value={officeDays}
-          onChange={value => onOfficeDaysChange(id, value)}
-          mode="tags"
-          style={{ width: '100%', marginLeft: '8px' }}>
-          {daysOptions}
-        </Select>
+        <Input
+          value={slotSummary}
+          onChange={event => onSlotSummaryChange(id, event.target.value)}
+          style={{ width: '100%', marginLeft: '8px' }}
+        />
       </Flex>
-      <Flex row align style={{ margin: '4px 0' }}>
-        <Flex column style={{ fontWeight: 'bold', minWidth: '90px' }}>
-          <div>Test time </div>
-          <div>+ nr of places</div>
-        </Flex>
-        <Flex row style={{ flexWrap: 'wrap' }}>
+      <Flex
+        row
+        align
+        style={{ margin: '4px 0', justifyContent: 'space-between' }}>
+        <span style={{ fontWeight: 'bold', minWidth: '90px' }}>
+          Available places
+        </span>
+        <Flex row justify style={{ flexWrap: 'wrap', width: '100%' }}>
           {testHours.map((testHour: TestHourInSlot, index: number) => {
             return (
               <Flex
@@ -131,6 +121,7 @@ export default function Slot(props: Props): JSX.Element {
                 style={{
                   position: 'relative',
                   margin: '0 4px 4px 0',
+                  boxSizing: 'border-box',
                   padding: 0,
                   alignItems: 'flex-end',
                 }}>
@@ -163,7 +154,7 @@ export default function Slot(props: Props): JSX.Element {
                 <Flex
                   column
                   style={{
-                    margin: '0 4px 4px 0',
+                    margin: '2px',
                     padding: 0,
                     border: '1px solid #cecece',
                   }}>
@@ -171,7 +162,7 @@ export default function Slot(props: Props): JSX.Element {
                     placeholder="time"
                     value={testHour.hour}
                     onChange={value => onTestHourChange(testHour, value)}
-                    style={{ width: '60px' }}>
+                    style={{ width: '80px' }}>
                     {possibleHours.map((hour: string) => (
                       <OptionAutoComplete key={`hour-${uuid()}`} value={hour}>
                         {hour}
@@ -182,7 +173,7 @@ export default function Slot(props: Props): JSX.Element {
                     min={0}
                     max={500}
                     value={testHour.places}
-                    style={{ width: '60px' }}
+                    style={{ width: '80px' }}
                     onChange={(value: number) =>
                       onTestPlacesChange(testHour, value)
                     }
@@ -194,7 +185,7 @@ export default function Slot(props: Props): JSX.Element {
           <Flex
             column
             style={{
-              margin: '0 4px 4px 0',
+              margin: '4px',
               padding: 0,
               minWidth: '60px',
               minHeight: '60px',
@@ -203,7 +194,7 @@ export default function Slot(props: Props): JSX.Element {
               type="dashed"
               icon={<PlusOutlined />}
               onClick={onAddHour}
-              style={{ height: '60px', width: '60px' }}
+              style={{ height: '60px', width: '80px' }}
             />
           </Flex>
         </Flex>

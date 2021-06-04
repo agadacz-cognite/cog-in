@@ -142,13 +142,6 @@ const columns = (day: string) => [
     sorter: (a: any, b: any) => stringCompare(a?.name, b?.name),
   },
   {
-    title: 'Manager',
-    key: 'manager',
-    dataIndex: 'manager',
-    render: (manager: string) => <span>{manager}</span>,
-    sorter: (a: any, b: any) => stringCompare(a?.manager, b?.manager),
-  },
-  {
     title: 'Hour',
     key: 'hour',
     dataIndex: 'hour',
@@ -158,13 +151,10 @@ const columns = (day: string) => [
     sorter: (a: any, b: any) => stringCompare(a?.hour, b?.hour),
   },
   {
-    title: () => <Tooltip title="Vaccinated?">💉</Tooltip>,
-    key: 'vaccinated',
-    dataIndex: 'vaccinated',
-    width: '20px',
-    render: (vaccinated: string) => (
-      <span>{vaccinated === 'X' ? 'yes' : ''}</span>
-    ),
-    sorter: (a: any, b: any) => stringCompare(a?.vaccinated, b?.vaccinated),
+    title: 'Comment',
+    key: 'comment',
+    dataIndex: 'comment',
+    render: (comment: string) => <span>{comment}</span>,
+    sorter: (a: any, b: any) => stringCompare(a?.comment, b?.comment),
   },
 ];
