@@ -30,9 +30,10 @@ export const track = ({ email, event, eventOptions = {} }: Track): void => {
       ...eventOptions,
     });
   } catch (error) {
-    mixpanel.track('MIXPANEL ERROR', {
+    mixpanel.track(`${prefix}_MIXPANEL_ERROR`, {
       email: 'SYSTEM',
       timestamp: Date.now(),
+      error,
     });
   }
 };

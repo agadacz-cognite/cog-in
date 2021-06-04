@@ -52,7 +52,7 @@ export default function OldRegistrations(): JSX.Element {
     }
   };
   const onWeekPreview = (weekId: string | undefined) =>
-    history.push(`/admin/preview/${weekId}`);
+    history.push(oldPaths.adminPreview.path(weekId));
   const onWeekExport = async (weekId: string | undefined) => {
     const {
       final: registrations,

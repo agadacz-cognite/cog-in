@@ -29,14 +29,17 @@ import {
   failedAddCalendarEventTracker,
   startVideoTracker,
 } from '../mixpanel';
-import { getUserTestHours, oldPaths } from '../shared';
 import {
+  getUserTestHours,
+  oldPaths,
   sendEmail,
   translateHourIdToHour,
   ChosenHour,
   errorHandler,
-  Guideline,
-  guidelines,
+  eventDetails,
+  eventVideo,
+  eventTitle,
+  EventDetails,
 } from '../shared';
 import { Flex, Card, Header } from '../components';
 
@@ -157,7 +160,8 @@ export default function DaysSelection(): JSX.Element {
             summary: '💉‧͙⁺˚*･༓☾ COVID test ☽༓･*˚⁺‧͙ 💉',
             location: 'Oksenøyveien 10, Grand Hall',
             description:
-              '✨GUIDELINES✨\n\n' + guidelines.map(g => g.text).join('\n\n- '),
+              '✨EVENT DETAILS✨\n\n' +
+              eventDetails.map(g => g.text).join('\n\n- '),
             start: {
               dateTime: userTestHour.start,
               timeZone: 'Europe/Oslo',
@@ -400,7 +404,7 @@ export default function DaysSelection(): JSX.Element {
             </Card>
           )}
           <Card
-            title="Your current selection"
+            title="Your events"
             style={{ width: 'auto', height: 'auto', margin: '8px' }}>
             <Flex column align justify>
               {ifRegistrationPending()}
@@ -426,11 +430,8 @@ export default function DaysSelection(): JSX.Element {
         <Card
           title={
             <Title level={4} style={{ margin: 0 }}>
-              <a
-                href="https://docs.google.com/document/d/1e7H0yW2TqpwzqHT0znAUwlzUN5OS940MesE1o6uiwfI"
-                target="_blank"
-                rel="noreferrer">
-                Guidelines
+              <a href={eventTitle.link ?? ''} target="_blank" rel="noreferrer">
+                {eventTitle.text}
               </a>
             </Title>
           }
@@ -441,22 +442,24 @@ export default function DaysSelection(): JSX.Element {
             margin: '8px',
           }}>
           <StyledFlex column justify>
-            {guidelines.map((guideline: Guideline) => (
+            {eventDetails.map((eventDetail: EventDetails) => (
               <span
                 key={uuid()}
                 style={{
                   margin: '2px',
                   textAlign: 'justify',
-                  fontWeight: guideline.important ? 'bold' : 'normal',
+                  fontWeight: eventDetail.important ? 'bold' : 'normal',
                 }}>
-                ● {guideline.text}
+                ● {eventDetail.text}
               </span>
             ))}
-            <ReactPlayer
-              url="https://www.youtube.com/watch?v=iv39g-J79W0"
-              width="100%"
-              onStart={onVideoStart}
-            />
+            {eventVideo && (
+              <ReactPlayer
+                url={eventVideo}
+                width="100%"
+                onStart={onVideoStart}
+              />
+            )}
           </StyledFlex>
         </Card>
       </Flex>

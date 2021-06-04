@@ -1,5 +1,5 @@
 export * from './helpers';
 export * from './utils';
 export * from './types';
-export * from './guidelines';
+export * from './eventDetails';
 export * from './paths';

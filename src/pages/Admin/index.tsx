@@ -80,10 +80,10 @@ export default function Admin(): JSX.Element {
     }
   };
   const onEditActiveRegistration = () =>
-    history.push(`/admin/editweek/${activeRegistration?.id}`);
+    history.push(oldPaths.adminEditWeek.path(activeRegistration?.id));
   const onActiveRegistrationClose = () => closeActiveRegistration();
   const onPreviewRegisteredUsers = () =>
-    history.push(`/admin/preview/${activeRegistration?.id}`);
+    history.push(oldPaths.adminPreview.path(activeRegistration?.id));
   const onCreateNewRegistration = () =>
     history.push(oldPaths.adminNewWeek.path());
   const onSeeOldRegistrations = () =>
