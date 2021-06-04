@@ -4,8 +4,7 @@ import { isDev } from '../shared';
 
 export const useMixpanel = (): void => {
   const [mixpanelLoaded, setMixpanelLoaded] = useState(false);
-  const token = process.env.COGIN_APP_MIXPANEL;
-
+  const token = process.env.REACT_APP_MIXPANEL;
   useEffect(() => {
     if (!token || mixpanelLoaded) {
       return;

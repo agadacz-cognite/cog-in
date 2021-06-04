@@ -1,37 +1,23 @@
 import { track } from '../';
 
-export const clickGuidelinesTracker = (email: string): void =>
-  track({
-    email: email ?? 'UNKNOWN ENTITY',
-    event: 'Guidelines click',
-    eventOptions: { timestamp: Date.now() },
-  });
-
-export const clickSlackLinkTracker = (email: string): void =>
-  track({
-    email: email ?? 'UNKNOWN ENTITY',
-    event: 'Slack link click',
-    eventOptions: { timestamp: Date.now() },
-  });
-
 export const clickContactLinkTracker = (email: string, contact: string): void =>
   track({
     email: email ?? 'UNKNOWN ENTITY',
-    event: 'Contact link click',
+    event: 'link.contact.click',
     eventOptions: { timestamp: Date.now(), contact },
   });
 
 export const clickGithubLinkTracker = (email: string): void =>
   track({
     email: email ?? 'UNKNOWN ENTITY',
-    event: 'GitHub link click',
+    event: 'link.github.click',
     eventOptions: { timestamp: Date.now() },
   });
 
 export const clickMixpanelLinkTracker = (email: string): void =>
   track({
     email: email ?? 'UNKNOWN ENTITY',
-    event: 'Mixpanel link click',
+    event: 'link.mixpanel.click',
     eventOptions: { timestamp: Date.now() },
   });
 
@@ -39,7 +25,7 @@ export const clickMixpanelLinkTracker = (email: string): void =>
 export const addCalendarEventTracker = (email: string): void =>
   track({
     email: email ?? 'UNKNOWN ENTITY',
-    event: 'Add calendar event',
+    event: 'event.calendar.add',
     eventOptions: { timestamp: Date.now() },
   });
 
@@ -49,7 +35,7 @@ export const failedAddCalendarEventTracker = (
 ): void =>
   track({
     email: email ?? 'UNKNOWN ENTITY',
-    event: 'Add calendar event FAIL',
+    event: 'event.calendar.add.FAIL',
     eventOptions: { timestamp: Date.now(), failReason },
   });
 
@@ -57,6 +43,6 @@ export const failedAddCalendarEventTracker = (
 export const startVideoTracker = (email: string): void =>
   track({
     email: email ?? 'UNKNOWN ENTITY',
-    event: 'Start watching video',
+    event: 'video.watch',
     eventOptions: { timestamp: Date.now() },
   });

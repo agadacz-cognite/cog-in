@@ -4,7 +4,7 @@ import { track } from '../';
 export const newRegistrationTracker = (registrationId: string): void =>
   track({
     email: 'ADMIN',
-    event: 'Admin create registration',
+    event: 'admin.registration.create',
     eventOptions: { timestamp: Date.now(), registrationId },
   });
 
@@ -14,7 +14,7 @@ export const failedNewRegistrationTracker = (
 ): void =>
   track({
     email: 'ADMIN',
-    event: 'Admin create registration FAIL',
+    event: 'admin.registration.create.FAIL',
     eventOptions: { timestamp: Date.now(), failReason, registrationId },
   });
 
@@ -22,7 +22,7 @@ export const failedNewRegistrationTracker = (
 export const editRegistrationTracker = (registrationId: string): void =>
   track({
     email: 'ADMIN',
-    event: 'Admin edit registration',
+    event: 'admin.registration.edit',
     eventOptions: { timestamp: Date.now(), registrationId },
   });
 
@@ -32,7 +32,7 @@ export const failedEditRegistrationTracker = (
 ): void =>
   track({
     email: 'ADMIN',
-    event: 'Admin edit registration FAIL',
+    event: 'admin.registration.edit.FAIL',
     eventOptions: { timestamp: Date.now(), failReason, registrationId },
   });
 
@@ -40,13 +40,13 @@ export const failedEditRegistrationTracker = (
 export const closeRegistrationTracker = (): void =>
   track({
     email: 'ADMIN',
-    event: 'Admin close registration',
+    event: 'admin.registration.close',
     eventOptions: { timestamp: Date.now() },
   });
 
 export const failedCloseRegistrationTracker = (failReason: string): void =>
   track({
     email: 'ADMIN',
-    event: 'Admin close registration FAIL',
+    event: 'admin.registration.close.FAIL',
     eventOptions: { timestamp: Date.now(), failReason },
   });

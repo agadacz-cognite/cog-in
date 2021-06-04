@@ -16,6 +16,7 @@ import { closeActiveRegistration } from '../../firebase';
 import {
   getRegistrationsForExcel,
   savePreregistrationEmails,
+  oldPaths,
 } from '../../shared';
 
 const { Title } = Typography;
@@ -83,9 +84,11 @@ export default function Admin(): JSX.Element {
   const onActiveRegistrationClose = () => closeActiveRegistration();
   const onPreviewRegisteredUsers = () =>
     history.push(`/admin/preview/${activeRegistration?.id}`);
-  const onCreateNewRegistration = () => history.push('/admin/newweek');
-  const onSeeOldRegistrations = () => history.push('/admin/oldweeks');
-  const onBack = () => history.push('/start');
+  const onCreateNewRegistration = () =>
+    history.push(oldPaths.adminNewWeek.path());
+  const onSeeOldRegistrations = () =>
+    history.push(oldPaths.adminArchive.path());
+  const onBack = () => history.push(oldPaths.home.path());
 
   return (
     <Flex column style={{ margin: 'auto' }}>

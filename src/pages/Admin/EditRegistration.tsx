@@ -14,7 +14,7 @@ import {
   useBackIfNotLogged,
 } from '../../context';
 import { editActiveRegistration } from '../../firebase';
-import { SlotData, isWeekday, randomFarAwayDate } from '../../shared';
+import { SlotData, isWeekday, randomFarAwayDate, oldPaths } from '../../shared';
 import { defaultNewHour } from './utils';
 import Slot from './Slot';
 
@@ -95,7 +95,7 @@ export default function EditRegistration(): JSX.Element {
     if (canEditRegistration) {
       editActiveRegistration(activeRegistrationId, registrationData);
       setTimeout(() => {
-        history.push('/admin');
+        history.push(oldPaths.admin.path());
         setLoading(false);
       }, 2000);
     }
@@ -140,7 +140,7 @@ export default function EditRegistration(): JSX.Element {
     setSlots(fixedSlots);
   };
 
-  const onBack = () => history.push('/admin');
+  const onBack = () => history.push(oldPaths.admin.path());
 
   return (
     <Flex column style={{ maxWidth: '1024px', margin: 'auto' }}>

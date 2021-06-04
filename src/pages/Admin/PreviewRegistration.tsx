@@ -8,7 +8,11 @@ import {
   useBackIfNotLogged,
   useActiveRegistration,
 } from '../../context';
-import { stringCompare, getRegistrationsForThisWeek } from '../../shared/';
+import {
+  stringCompare,
+  getRegistrationsForThisWeek,
+  oldPaths,
+} from '../../shared/';
 import { Flex, Header, Table } from '../../components';
 
 const { Title } = Typography;
@@ -46,7 +50,7 @@ export default function PreviewRegistration(): JSX.Element {
     setWeekDate(weekDate);
     setWeekDays(weeks);
   };
-  const onBack = () => history.push('/admin');
+  const onBack = () => history.push(oldPaths.admin.path());
 
   useEffect(() => {
     if (activeRegistration) {

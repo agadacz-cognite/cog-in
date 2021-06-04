@@ -13,6 +13,7 @@ import {
   sendEmailToUser,
   isDev,
   translateSlotsToHuman,
+  oldPaths,
 } from '../shared';
 import {
   newUserRegistrationTracker,
@@ -187,7 +188,7 @@ export const registerUserForTest = async (
           });
           sendEmailToUser(userToRegister, activeRegistration);
           editUserRegistrationTracker(userToRegister?.email, translatedSlots);
-          history.push('/start');
+          history.push(oldPaths.home.path());
           return;
         })
         .catch(error => {
@@ -205,7 +206,7 @@ export const registerUserForTest = async (
           });
           sendEmailToUser(userToRegister, activeRegistration);
           newUserRegistrationTracker(userToRegister?.email, translatedSlots);
-          history.push('/start');
+          history.push(oldPaths.home.path());
           return;
         })
         .catch(error => {

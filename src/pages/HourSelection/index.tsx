@@ -8,7 +8,7 @@ import {
   useAvailablePlacesForSlots,
 } from '../../context';
 import { registerUserForTest } from '../../firebase';
-import { SlotData, ChosenHour } from '../../shared';
+import { SlotData, ChosenHour, oldPaths } from '../../shared';
 import { Flex, Card } from '../../components';
 import MappedHours from './MappedHours';
 
@@ -34,7 +34,7 @@ export default function HourSelection(): JSX.Element {
       const slots: SlotData[] = activeRegistration?.slots;
       setChosenDays(slots);
     } else {
-      history.push('/start');
+      history.push(oldPaths.home.path());
     }
   }, []);
 
@@ -88,7 +88,7 @@ export default function HourSelection(): JSX.Element {
     );
     setLoading(false);
   };
-  const onBack = () => history.push('/start');
+  const onBack = () => history.push(oldPaths.home.path());
 
   return (
     <Flex column align style={{ margin: 'auto', maxWidth: '1250px' }}>

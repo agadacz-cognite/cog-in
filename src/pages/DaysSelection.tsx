@@ -24,13 +24,12 @@ import {
 } from '../context';
 import { removeUserRegistration } from '../firebase/utils';
 import {
-  clickGuidelinesTracker,
   clickContactLinkTracker,
   addCalendarEventTracker,
   failedAddCalendarEventTracker,
   startVideoTracker,
 } from '../mixpanel';
-import { getUserTestHours } from '../shared';
+import { getUserTestHours, oldPaths } from '../shared';
 import {
   sendEmail,
   translateHourIdToHour,
@@ -84,10 +83,9 @@ export default function DaysSelection(): JSX.Element {
     usersRegistration?.weekId &&
     usersRegistration?.weekId === activeRegistration?.id;
 
-  const onAdminPageClick = () => history.push('/admin');
-  const onGuidelinesClick = () => clickGuidelinesTracker(user?.email);
+  const onAdminPageClick = () => history.push(oldPaths.admin.path());
   const onProceed = () => {
-    history.push('/choose');
+    history.push(oldPaths.selection.path());
   };
   const onVideoStart = () => startVideoTracker(user?.email);
   const onDelete = async () => {
@@ -431,8 +429,7 @@ export default function DaysSelection(): JSX.Element {
               <a
                 href="https://docs.google.com/document/d/1e7H0yW2TqpwzqHT0znAUwlzUN5OS940MesE1o6uiwfI"
                 target="_blank"
-                rel="noreferrer"
-                onClick={onGuidelinesClick}>
+                rel="noreferrer">
                 Guidelines
               </a>
             </Title>

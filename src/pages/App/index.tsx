@@ -13,7 +13,7 @@ import DaysSelection from '../DaysSelection';
 import HourSelection from '../HourSelection';
 import { AppContext } from '../../context';
 import { Loader, LinksBar } from '../../components';
-import { isDev } from '../../shared';
+import { isDev, oldPaths } from '../../shared';
 import { useMixpanel } from '../../mixpanel';
 import { Wrapper, DevBanner } from './components';
 
@@ -45,7 +45,7 @@ export default function App(): JSX.Element {
   return (
     <Router>
       <Switch>
-        <Route exact path="/">
+        <Route exact path={oldPaths.login.staticPath}>
           <Wrapper background={background}>
             {isDev && <DevBanner />}
             <LinksBar />
@@ -53,7 +53,7 @@ export default function App(): JSX.Element {
             <Home />
           </Wrapper>
         </Route>
-        <Route exact path="/start">
+        <Route exact path={oldPaths.home.staticPath}>
           <Wrapper background={background}>
             {isDev && <DevBanner />}
             <LinksBar />
@@ -61,7 +61,7 @@ export default function App(): JSX.Element {
             <DaysSelection />
           </Wrapper>
         </Route>
-        <Route exact path="/choose">
+        <Route exact path={oldPaths.selection.staticPath}>
           <Wrapper background={background}>
             {isDev && <DevBanner />}
             <LinksBar />
@@ -69,7 +69,7 @@ export default function App(): JSX.Element {
             <HourSelection />
           </Wrapper>
         </Route>
-        <Route exact path="/admin">
+        <Route exact path={oldPaths.admin.staticPath}>
           <Wrapper background={background}>
             {isDev && <DevBanner />}
             <LinksBar />
@@ -77,7 +77,7 @@ export default function App(): JSX.Element {
             <Admin />
           </Wrapper>
         </Route>
-        <Route exact path="/admin/newweek">
+        <Route exact path={oldPaths.adminNewWeek.staticPath}>
           <Wrapper background={background}>
             {isDev && <DevBanner />}
             <LinksBar />
@@ -85,7 +85,7 @@ export default function App(): JSX.Element {
             <NewRegistration />
           </Wrapper>
         </Route>
-        <Route exact path="/admin/editweek/:weekId">
+        <Route exact path={oldPaths.adminEditWeek.staticPath}>
           <Wrapper background={background}>
             {isDev && <DevBanner />}
             <LinksBar />
@@ -93,7 +93,7 @@ export default function App(): JSX.Element {
             <EditRegistration />
           </Wrapper>
         </Route>
-        <Route exact path="/admin/oldweeks">
+        <Route exact path={oldPaths.adminArchive.staticPath}>
           <Wrapper background={background}>
             {isDev && <DevBanner />}
             <LinksBar />
@@ -101,7 +101,7 @@ export default function App(): JSX.Element {
             <OldRegistrations />
           </Wrapper>
         </Route>
-        <Route exact path="/admin/preview/:weekId">
+        <Route exact path={oldPaths.adminPreview.staticPath}>
           <Wrapper background={background}>
             {isDev && <DevBanner />}
             <LinksBar />

@@ -19,6 +19,7 @@ import {
   RegistrationData,
   isWeekday,
   randomFarAwayDate,
+  oldPaths,
 } from '../../shared';
 import { defaultSlot, defaultNewHour } from './utils';
 import Slot from './Slot';
@@ -74,7 +75,7 @@ export default function NewRegistration(): JSX.Element {
     if (weekStartDate && weekEndDate && registrationOpenTime && slots) {
       createActiveRegistration(registrationData);
       setTimeout(() => {
-        history.push('/admin');
+        history.push(oldPaths.admin.path());
         setLoading(false);
       }, 2000);
     }
@@ -119,7 +120,7 @@ export default function NewRegistration(): JSX.Element {
     setSlots(fixedSlots);
   };
 
-  const onBack = () => history.push('/admin');
+  const onBack = () => history.push(oldPaths.admin.path());
 
   return (
     <Flex column style={{ maxWidth: '1024px', margin: 'auto' }}>
