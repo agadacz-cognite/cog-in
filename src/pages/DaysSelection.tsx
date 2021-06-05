@@ -24,22 +24,24 @@ import {
 } from '../context';
 import { removeUserRegistration } from '../firebase/utils';
 import {
-  clickGuidelinesTracker,
   clickContactLinkTracker,
   addCalendarEventTracker,
   failedAddCalendarEventTracker,
   startVideoTracker,
 } from '../mixpanel';
-import { getUserTestHours } from '../shared';
 import {
+  getUserTestHours,
+  oldPaths,
   sendEmail,
   translateHourIdToHour,
   ChosenHour,
   errorHandler,
-  Guideline,
-  guidelines,
+  eventDetails,
+  eventVideo,
+  eventTitle,
+  EventDetails,
 } from '../shared';
-import { Flex, Card, Header, SlackLink } from '../components';
+import { Flex, Card, Header, InfoLink } from '../components';
 
 dayjs.extend(relativeTime);
 
@@ -84,21 +86,15 @@ export default function DaysSelection(): JSX.Element {
     usersRegistration?.weekId &&
     usersRegistration?.weekId === activeRegistration?.id;
 
-  const onAdminPageClick = () => history.push('/admin');
-  const onGuidelinesClick = () => clickGuidelinesTracker(user?.email);
+  const onAdminPageClick = () => history.push(oldPaths.admin.path());
   const onProceed = () => {
-    history.push('/choose');
+    history.push(oldPaths.selection.path());
   };
   const onVideoStart = () => startVideoTracker(user?.email);
   const onDelete = async () => {
     const weekId = usersRegistration?.weekId;
     const email = usersRegistration?.email;
     if (isUserRegistered && weekId && email) {
-      const week = `${new Date(
-        (activeRegistration?.week[0]?.seconds ?? 0) * 1000,
-      ).toLocaleDateString()} - ${new Date(
-        (activeRegistration?.week[1]?.seconds ?? 0) * 1000,
-      ).toLocaleDateString()}`;
       const userHours = usersRegistration?.testHours
         .map((testHour: ChosenHour) => {
           const week = activeRegistration?.slots.find(
@@ -108,16 +104,15 @@ export default function DaysSelection(): JSX.Element {
             week?.testHours,
             testHour,
           );
-          const officeDays = week?.officeDays ?? [];
-          return `${week?.testDay ?? '<unknown>'} - ${
+          return `${week?.slotName ?? '<unknown>'} - ${
             translatedHour ?? '<unknown>'
-          } (office days: ${officeDays.join(',')})`;
+          }`;
         })
         .join(', ');
       const userFirstName =
         usersRegistration?.name?.split(' ')?.[0] ?? 'Unknown Person';
-      const subject = `💉 You have deleted your COVID test registration - week ${week}`;
-      const content = `Hello ${userFirstName}! You just removed your appointnment for the COVID test for the week ${week}. Removed testing dates: ${userHours}.`;
+      const subject = `🎇 You have deleted registration for the event: ${eventTitle.text}`;
+      const content = `Hello ${userFirstName}! You just removed your registration for the event: ${eventTitle.text}. Removed registration: ${userHours}.`;
       setLoading(true);
       await removeUserRegistration(weekId, email);
       sendEmail({
@@ -156,10 +151,11 @@ export default function DaysSelection(): JSX.Element {
         .signIn()
         .then(() => {
           const covidEvents = userTestHours.map((userTestHour: any) => ({
-            summary: '💉‧͙⁺˚*･༓☾ COVID test ☽༓･*˚⁺‧͙ 💉',
-            location: 'Oksenøyveien 10, Grand Hall',
+            summary: `🎇‧͙⁺˚*･༓☾ ${eventTitle.text} ☽༓･*˚⁺‧͙ 🎇`,
+            location: 'Oksenøyveien 10',
             description:
-              '✨GUIDELINES✨\n\n' + guidelines.map(g => g.text).join('\n\n- '),
+              '✨EVENT DETAILS✨\n\n' +
+              eventDetails.map(g => g.text).join('\n\n- '),
             start: {
               dateTime: userTestHour.start,
               timeZone: 'Europe/Oslo',
@@ -211,9 +207,7 @@ export default function DaysSelection(): JSX.Element {
   const ifNoRegistration = (): JSX.Element | undefined => {
     if (!activeRegistration) {
       return (
-        <p>
-          There is no active registration at the moment! Please try again later.
-        </p>
+        <Title level={5}>There is no active registration at the moment!</Title>
       );
     }
     return undefined;
@@ -230,7 +224,7 @@ export default function DaysSelection(): JSX.Element {
     ) {
       return (
         <StyledFlex column justify align>
-          {canPreregister && !registrationIsOpen ? (
+          {canPreregister && !registrationIsOpen && (
             <Flex
               row
               align
@@ -241,18 +235,8 @@ export default function DaysSelection(): JSX.Element {
                 You can preregister!
               </Title>
             </Flex>
-          ) : (
-            <Title level={4}>
-              {new Date(
-                (activeRegistration?.week[0]?.seconds ?? 0) * 1000,
-              ).toLocaleDateString()}
-              -
-              {new Date(
-                (activeRegistration?.week[1]?.seconds ?? 0) * 1000,
-              ).toLocaleDateString()}
-            </Title>
           )}
-          <Title level={5}>You didn&apos;t register for this week yet.</Title>
+          <Title level={5}>You didn&apos;t register for this event yet.</Title>
         </StyledFlex>
       );
     }
@@ -336,15 +320,6 @@ export default function DaysSelection(): JSX.Element {
     if (isUserRegistered) {
       return (
         <PanelDone column align justify>
-          <Title level={4}>
-            {new Date(
-              (activeRegistration?.week[0]?.seconds ?? 0) * 1000,
-            ).toLocaleDateString()}{' '}
-            -{' '}
-            {new Date(
-              (activeRegistration?.week[1]?.seconds ?? 0) * 1000,
-            ).toLocaleDateString()}
-          </Title>
           {(usersRegistration?.testHours ?? []).map(
             (chosenHour: ChosenHour, index: number) => {
               const week = activeRegistration?.slots.find(
@@ -357,7 +332,7 @@ export default function DaysSelection(): JSX.Element {
               return (
                 <Flex column align justify key={`your-slot-${index}`}>
                   <Title level={5}>
-                    {week?.testDay ?? '<unknown>'} - {userHours ?? '<unknown>'}
+                    {week?.slotName ?? '<unknown>'} - {userHours ?? '<unknown>'}
                   </Title>
                 </Flex>
               );
@@ -384,9 +359,10 @@ export default function DaysSelection(): JSX.Element {
     <Flex column style={{ margin: 'auto' }}>
       <Header>
         <Title level={2} style={{ marginBottom: '4px' }}>
-          Hello, {getUserFirstName()}!
+          {eventTitle.text}
         </Title>
-        <p>
+        <p>Hello, {getUserFirstName()}!</p>
+        <p style={{ fontSize: '0.8em' }}>
           Logged in as {user?.displayName ?? '-'} ({user?.email ?? '-'})
         </p>
       </Header>
@@ -402,7 +378,7 @@ export default function DaysSelection(): JSX.Element {
             </Card>
           )}
           <Card
-            title="Your current selection"
+            title="Your events"
             style={{ width: 'auto', height: 'auto', margin: '8px' }}>
             <Flex column align justify>
               {ifRegistrationPending()}
@@ -412,38 +388,12 @@ export default function DaysSelection(): JSX.Element {
               {ifRegistrationOpen()}
             </Flex>
           </Card>
-          <Card style={{ width: 'auto', height: 'auto', margin: '8px' }}>
-            <ul style={{ margin: 0, padding: 0, listStyleType: 'none' }}>
-              <li>
-                Technical problems with app?{' '}
-                <a
-                  href="mailto:anna.gadacz@cognite.com?subject=COVID Project issue, fix fast pls"
-                  onClick={() => clickContactLinkTracker(user?.email, 'Anna')}>
-                  Contact Anna!
-                </a>
-              </li>
-              <li>
-                Question about testing itself?{' '}
-                <a
-                  href="mailto:madeleine.olstad@cognite.com?subject=Question about testing"
-                  onClick={() =>
-                    clickContactLinkTracker(user?.email, 'Madeleine')
-                  }>
-                  Contact Madeleine!
-                </a>
-              </li>
-            </ul>
-          </Card>
         </Flex>
         <Card
           title={
             <Title level={4} style={{ margin: 0 }}>
-              <a
-                href="https://docs.google.com/document/d/1e7H0yW2TqpwzqHT0znAUwlzUN5OS940MesE1o6uiwfI"
-                target="_blank"
-                rel="noreferrer"
-                onClick={onGuidelinesClick}>
-                Guidelines
+              <a href={eventTitle.link ?? ''} target="_blank" rel="noreferrer">
+                {eventTitle.text}
               </a>
             </Title>
           }
@@ -454,26 +404,35 @@ export default function DaysSelection(): JSX.Element {
             margin: '8px',
           }}>
           <StyledFlex column justify>
-            {guidelines.map((guideline: Guideline) => (
+            {eventDetails.map((eventDetail: EventDetails) => (
               <span
                 key={uuid()}
                 style={{
                   margin: '2px',
                   textAlign: 'justify',
-                  fontWeight: guideline.important ? 'bold' : 'normal',
+                  fontWeight: eventDetail.important ? 'bold' : 'normal',
                 }}>
-                ● {guideline.text}
+                ● {eventDetail.text}
               </span>
             ))}
-            <ReactPlayer
-              url="https://www.youtube.com/watch?v=iv39g-J79W0"
-              width="100%"
-              onStart={onVideoStart}
-            />
+            {eventVideo && (
+              <ReactPlayer
+                url={eventVideo}
+                width="100%"
+                onStart={onVideoStart}
+              />
+            )}
           </StyledFlex>
         </Card>
       </Flex>
-      <SlackLink />
+      <InfoLink>
+        Technical problems with app?{' '}
+        <a
+          href="mailto:anna.gadacz@cognite.com?subject=CogIN Project issue, fix fast pls"
+          onClick={() => clickContactLinkTracker(user?.email, 'Anna')}>
+          Click to contact Anna.
+        </a>
+      </InfoLink>
     </Flex>
   );
 }

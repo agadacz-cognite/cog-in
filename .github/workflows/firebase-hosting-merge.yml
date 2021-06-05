@@ -13,11 +13,11 @@ jobs:
       - uses: actions/checkout@v2
       - run: yarn && yarn run build
         env:
-          COGIN_APP_EMAIL_API_KEY: '${{ secrets.COGIN_APP_EMAIL_API_KEY }}'
-          COGIN_APP_FIREBASE_API_KEY: '${{ secrets.COGIN_APP_FIREBASE_API_KEY }}'
-          COGIN_APP_FIREBASE_APP_ID: '${{ secrets.COGIN_APP_FIREBASE_APP_ID }}'
-          COGIN_APP_FIREBASE_MESSAGING_SENDER_ID: '${{ secrets.COGIN_APP_FIREBASE_MESSAGING_SENDER_ID }}'
-          COGIN_APP_MIXPANEL: '${{ secrets.COGIN_APP_MIXPANEL }}'
+          REACT_APP_EMAIL_API_KEY: '${{ secrets.REACT_APP_EMAIL_API_KEY }}'
+          REACT_APP_FIREBASE_API_KEY: '${{ secrets.REACT_APP_FIREBASE_API_KEY }}'
+          REACT_APP_FIREBASE_APP_ID: '${{ secrets.REACT_APP_FIREBASE_APP_ID }}'
+          REACT_APP_FIREBASE_MESSAGING_SENDER_ID: '${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }}'
+          REACT_APP_MIXPANEL: '${{ secrets.REACT_APP_MIXPANEL }}'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

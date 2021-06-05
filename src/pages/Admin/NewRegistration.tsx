@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'moment/locale/en-gb';
 import { v4 as uuid } from 'uuid';
-import { Typography, Button, Popconfirm, notification } from 'antd';
+import { Typography, Button, Popconfirm, Switch, notification } from 'antd';
 import { PlusOutlined, WarningOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { Flex, Header, Card } from '../../components';
@@ -19,21 +19,36 @@ import {
   RegistrationData,
   isWeekday,
   randomFarAwayDate,
+  oldPaths,
 } from '../../shared';
-import { defaultSlot, defaultNewHour } from './utils';
+import { defaultSlot, defaultHour, defaultPlaces } from './utils';
 import Slot from './Slot';
+import { RegistrationOption } from './components';
 
 const { Title } = Typography;
 
 export default function NewRegistration(): JSX.Element {
   const history = useHistory();
   const { user, setLoading } = useContext(AppContext);
+  const [moreThanOneAllowed, setMoreThanOneAllowed] = useState(true);
   const [weekStartDate, setWeekStartDate] = useState<any | undefined>();
   const [weekEndDate, setWeekEndDate] = useState<any | undefined>();
   const [registrationOpenTime, setRegistrationOpenTime] = useState<any>(
     new Date(),
   );
-  const [slots, setSlots] = useState<SlotData[]>([defaultSlot]);
+  const [slots, setSlots] = useState<SlotData[]>([
+    {
+      ...defaultSlot,
+      id: uuid(),
+      testHours: [
+        {
+          hour: defaultHour,
+          places: defaultPlaces,
+          id: uuid(),
+        },
+      ],
+    },
+  ]);
 
   useBackIfNotLogged();
   useBackIfNotAdmin();
@@ -51,7 +66,7 @@ export default function NewRegistration(): JSX.Element {
       notification.warning({
         message: 'Incomplete data',
         description:
-          'You must provide the time when people can start registering for this week!',
+          'You must provide the time when people can start registering for this event!',
       });
       return;
     }
@@ -70,11 +85,12 @@ export default function NewRegistration(): JSX.Element {
       slots,
       id: uuid(),
       openedBy: user.email,
+      moreThanOneAllowed,
     };
     if (weekStartDate && weekEndDate && registrationOpenTime && slots) {
       createActiveRegistration(registrationData);
       setTimeout(() => {
-        history.push('/admin');
+        history.push(oldPaths.admin.path());
         setLoading(false);
       }, 2000);
     }
@@ -90,15 +106,21 @@ export default function NewRegistration(): JSX.Element {
   const onAddSlot = () => {
     const newSlot: SlotData = {
       id: uuid(),
-      testDay: 'Monday',
-      testHours: [defaultNewHour],
-      officeDays: ['Monday'],
+      slotName: '',
+      slotSummary: '',
+      testHours: [
+        {
+          hour: defaultHour,
+          places: defaultPlaces,
+          id: uuid(),
+        },
+      ],
     };
     setSlots([...slots, newSlot]);
   };
-  const onTestDayChange = (id: string, value: any) => {
+  const onSlotNameChange = (id: string, value: any) => {
     const fixedSlots = slots.map(slot =>
-      slot.id === id ? { ...slot, testDay: value } : slot,
+      slot.id === id ? { ...slot, slotName: value } : slot,
     );
     setSlots(fixedSlots);
   };
@@ -108,9 +130,9 @@ export default function NewRegistration(): JSX.Element {
     );
     setSlots(fixedSlots);
   };
-  const onOfficeDaysChange = (id: string, value: any) => {
+  const onSlotSummaryChange = (id: string, value: any) => {
     const fixedSlots = slots.map(slot =>
-      slot.id === id ? { ...slot, officeDays: value } : slot,
+      slot.id === id ? { ...slot, slotSummary: value } : slot,
     );
     setSlots(fixedSlots);
   };
@@ -119,7 +141,7 @@ export default function NewRegistration(): JSX.Element {
     setSlots(fixedSlots);
   };
 
-  const onBack = () => history.push('/admin');
+  const onBack = () => history.push(oldPaths.admin.path());
 
   return (
     <Flex column style={{ maxWidth: '1024px', margin: 'auto' }}>
@@ -131,7 +153,7 @@ export default function NewRegistration(): JSX.Element {
           Logged in as {user?.displayName ?? '-'} ({user?.email ?? '-'})
         </p>
       </Header>
-      <Flex row align justify style={{ flexWrap: 'wrap' }}>
+      <Flex row justify style={{ flexWrap: 'wrap' }}>
         <Flex column>
           <Card
             title="Select the week of the registration"
@@ -152,15 +174,9 @@ export default function NewRegistration(): JSX.Element {
               />
             </Flex>
           </Card>
-          <Card
-            title="Select time when people can start registering"
-            style={{ margin: '8px', maxWidth: '400px' }}>
-            <Flex column align justify>
-              <p>
-                Date selected here will be the time from which people can start
-                registering for their preferred time slots. This is to ensure
-                that everyone have a fair chance to get the slot they want.
-              </p>
+          <Card title="Options" style={{ margin: '8px', maxWidth: '400px' }}>
+            <RegistrationOption align>
+              <p>Date and time of opening registration</p>
               <DatePicker
                 selected={registrationOpenTime}
                 onChange={onStartDateChange}
@@ -181,7 +197,16 @@ export default function NewRegistration(): JSX.Element {
                   </Flex>
                 )}
               />
-            </Flex>
+            </RegistrationOption>
+            <RegistrationOption align>
+              <p>Allow selecting more than one option per slot</p>
+              <Switch
+                checkedChildren="Yes"
+                unCheckedChildren="No"
+                checked={moreThanOneAllowed}
+                onChange={setMoreThanOneAllowed}
+              />
+            </RegistrationOption>
           </Card>
         </Flex>
         <Card
@@ -197,9 +222,9 @@ export default function NewRegistration(): JSX.Element {
               <Slot
                 slot={slot}
                 key={`slot-${index}`}
-                onTestDayChange={onTestDayChange}
+                onSlotNameChange={onSlotNameChange}
                 onTestHoursChange={onTestHoursChange}
-                onOfficeDaysChange={onOfficeDaysChange}
+                onSlotSummaryChange={onSlotSummaryChange}
                 onSlotDelete={onSlotDelete}
               />
             ))}

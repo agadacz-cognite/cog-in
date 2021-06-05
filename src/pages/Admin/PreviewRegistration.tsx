@@ -8,7 +8,12 @@ import {
   useBackIfNotLogged,
   useActiveRegistration,
 } from '../../context';
-import { stringCompare, getRegistrationsForThisWeek } from '../../shared/';
+import {
+  stringCompare,
+  getRegistrationsForThisWeek,
+  oldPaths,
+  eventTitle,
+} from '../../shared/';
 import { Flex, Header, Table } from '../../components';
 
 const { Title } = Typography;
@@ -46,7 +51,7 @@ export default function PreviewRegistration(): JSX.Element {
     setWeekDate(weekDate);
     setWeekDays(weeks);
   };
-  const onBack = () => history.push('/admin');
+  const onBack = () => history.push(oldPaths.admin.path());
 
   useEffect(() => {
     if (activeRegistration) {
@@ -81,7 +86,7 @@ export default function PreviewRegistration(): JSX.Element {
                   </Title>
                 </Header>
                 <Table
-                  columns={columns(weekDays[index])}
+                  columns={columns()}
                   dataSource={oneSlot}
                   pagination={{ pageSize: 10, hideOnSinglePage: true }}
                 />
@@ -98,7 +103,7 @@ export default function PreviewRegistration(): JSX.Element {
   );
 }
 
-const columns = (day: string) => [
+const columns = () => [
   {
     title: 'Date',
     key: 'date',
@@ -121,7 +126,7 @@ const columns = (day: string) => [
     render: (item: any) => {
       const tooLateTooltip =
         'This person has signed up after the slot was already unavailable. Please contact them to rebook. Clicking their name will redirect you to email service with prepared template.';
-      const tooLateEmail = `mailto:${item.email}?subject=❗❗ You need to rebook your COVID test appointment 😿&body=Unfortunately you have to rebook your COVID appointment at ${day}, ${item.hour}.%0A%0ADue to a database lag your registration went through already after all the places for the slot were already taken.%0A%0AWe sincerely apologize for inconvenience.`;
+      const tooLateEmail = `mailto:${item.email}?subject=❗❗ You need to rebook your event registration 😿&body=Unfortunately you have to rebook your registration for the event: ${eventTitle.text}.%0A%0ADue to a database lag your registration went through already after all the places for the slot were already taken.%0A%0AWe sincerely apologize for inconvenience.`;
       return (
         <span style={{ fontWeight: 'bold' }}>
           {item.registeredTooLate ? (
@@ -138,13 +143,6 @@ const columns = (day: string) => [
     sorter: (a: any, b: any) => stringCompare(a?.name, b?.name),
   },
   {
-    title: 'Manager',
-    key: 'manager',
-    dataIndex: 'manager',
-    render: (manager: string) => <span>{manager}</span>,
-    sorter: (a: any, b: any) => stringCompare(a?.manager, b?.manager),
-  },
-  {
     title: 'Hour',
     key: 'hour',
     dataIndex: 'hour',
@@ -154,13 +152,10 @@ const columns = (day: string) => [
     sorter: (a: any, b: any) => stringCompare(a?.hour, b?.hour),
   },
   {
-    title: () => <Tooltip title="Vaccinated?">💉</Tooltip>,
-    key: 'vaccinated',
-    dataIndex: 'vaccinated',
-    width: '20px',
-    render: (vaccinated: string) => (
-      <span>{vaccinated === 'X' ? 'yes' : ''}</span>
-    ),
-    sorter: (a: any, b: any) => stringCompare(a?.vaccinated, b?.vaccinated),
+    title: 'Comment',
+    key: 'comment',
+    dataIndex: 'comment',
+    render: (comment: string) => <span>{comment}</span>,
+    sorter: (a: any, b: any) => stringCompare(a?.comment, b?.comment),
   },
 ];

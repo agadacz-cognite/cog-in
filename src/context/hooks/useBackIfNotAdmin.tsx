@@ -1,6 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../context';
+import { oldPaths } from '../../shared';
 import { useIsUserAdmin } from '.';
 
 /**
@@ -14,7 +15,7 @@ export const useBackIfNotAdmin = (): void => {
 
   useEffect(() => {
     if (!isUserAdmin) {
-      history.push('/start');
+      history.push(oldPaths.home.path());
     }
   }, [isUserAdmin]);
 };

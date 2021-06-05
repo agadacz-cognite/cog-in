@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Input, Button, Switch, notification } from 'antd';
+import { Input, Button, notification } from 'antd';
 import {
   AppContext,
   useBackIfNotLogged,
@@ -8,8 +8,8 @@ import {
   useAvailablePlacesForSlots,
 } from '../../context';
 import { registerUserForTest } from '../../firebase';
-import { SlotData, ChosenHour } from '../../shared';
-import { Flex, Card, SlackLink } from '../../components';
+import { SlotData, ChosenHour, oldPaths } from '../../shared';
+import { Flex, Card } from '../../components';
 import MappedHours from './MappedHours';
 
 export default function HourSelection(): JSX.Element {
@@ -20,10 +20,9 @@ export default function HourSelection(): JSX.Element {
     usersRegistration,
     activeRegistration,
   } = useContext(AppContext);
-  const [managerName, setManagerName] = useState('');
+  const [comment, setComment] = useState<string>('');
   const [chosenDays, setChosenDays] = useState<SlotData[]>([]);
   const [testHours, setTestHours] = useState<ChosenHour[]>([]);
-  const [vaccinated, setVaccinated] = useState(false);
 
   useBackIfNotLogged();
   useActiveRegistration();
@@ -34,28 +33,20 @@ export default function HourSelection(): JSX.Element {
       const slots: SlotData[] = activeRegistration?.slots;
       setChosenDays(slots);
     } else {
-      history.push('/start');
+      history.push(oldPaths.home.path());
     }
   }, []);
 
   useEffect(() => {
     if (usersRegistration?.testHours) {
       setTestHours(usersRegistration.testHours);
-      setVaccinated(usersRegistration.vaccinated);
-      setManagerName(usersRegistration.manager);
+      setComment(usersRegistration.comment ?? '');
     }
   }, []);
 
-  const onManagerNameChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setManagerName(event.target.value);
+  const onCommentChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setComment(event.target.value ?? '');
   const onSubmit = async () => {
-    if (!managerName?.length) {
-      notification.warning({
-        message: 'Manager not specified',
-        description: 'You have to share your manager name.',
-      });
-      return;
-    }
     if (!activeRegistration?.id) {
       notification.warning({
         message: 'Something went wrong',
@@ -74,8 +65,7 @@ export default function HourSelection(): JSX.Element {
       email: user.email,
       name: user.displayName,
       weekId: activeRegistration.id,
-      manager: managerName,
-      vaccinated,
+      comment,
       registeredTimestamp: Date.now(),
       testHours,
     };
@@ -88,7 +78,7 @@ export default function HourSelection(): JSX.Element {
     );
     setLoading(false);
   };
-  const onBack = () => history.push('/start');
+  const onBack = () => history.push(oldPaths.home.path());
 
   return (
     <Flex column align style={{ margin: 'auto', maxWidth: '1250px' }}>
@@ -98,16 +88,11 @@ export default function HourSelection(): JSX.Element {
             key={`${slot.id}-${index}`}
             title={
               <Flex align justify style={{ fontWeight: 'bold' }}>
-                {slot.testDay}
+                {slot.slotName}
               </Flex>
             }
-            style={{ margin: '8px', maxWidth: '500px' }}>
-            <p>After registering below, you can come to the office at:</p>
-            <ul>
-              {slot.officeDays.map((day: string) => (
-                <li key={`${slot.id}-${day}`}>{day}</li>
-              ))}
-            </ul>
+            style={{ margin: '8px', maxWidth: '550px' }}>
+            <p>{slot.slotSummary}</p>
             <Flex row align justify style={{ flexWrap: 'wrap' }}>
               <MappedHours
                 id={slot.id}
@@ -119,33 +104,19 @@ export default function HourSelection(): JSX.Element {
           </Card>
         ))}
       </Flex>
-      <Flex
-        column
-        style={{
-          margin: '8px',
-          padding: '8px',
-          backgroundColor: 'white',
-          width: '100%',
-        }}>
-        <Input
-          placeholder="Your manager's name and surname here..."
-          value={managerName}
-          onChange={onManagerNameChange}
-        />
-        <Flex row align style={{ margin: '8px' }}>
-          <p style={{ margin: '0 8px 0 0', padding: 0 }}>Are you vaccinated?</p>
-          <Switch
-            checkedChildren="Yes"
-            unCheckedChildren="No"
-            checked={vaccinated}
-            onChange={setVaccinated}
+      <Card style={{ width: '100%' }}>
+        <Flex column>
+          <Input
+            placeholder="Write down any diet preferences you have"
+            value={comment}
+            onChange={onCommentChange}
+            style={{ marginBottom: '8px' }}
           />
+          <Button type="primary" onClick={onSubmit}>
+            Submit
+          </Button>
         </Flex>
-        <Button type="primary" onClick={onSubmit}>
-          Submit
-        </Button>
-      </Flex>
-      <SlackLink />
+      </Card>
       <Flex row align justify style={{ padding: '8px', margin: '8px' }}>
         <Button
           type="default"

@@ -4,7 +4,14 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'moment/locale/en-gb';
 import { v4 as uuid } from 'uuid';
-import { Typography, Button, Popconfirm, Spin, notification } from 'antd';
+import {
+  Typography,
+  Button,
+  Popconfirm,
+  Spin,
+  Switch,
+  notification,
+} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { Flex, Header, Card } from '../../components';
@@ -14,9 +21,10 @@ import {
   useBackIfNotLogged,
 } from '../../context';
 import { editActiveRegistration } from '../../firebase';
-import { SlotData, isWeekday, randomFarAwayDate } from '../../shared';
-import { defaultNewHour } from './utils';
+import { SlotData, isWeekday, randomFarAwayDate, oldPaths } from '../../shared';
+import { defaultHour, defaultPlaces } from './utils';
 import Slot from './Slot';
+import { RegistrationOption } from './components';
 
 const { Title } = Typography;
 
@@ -24,6 +32,9 @@ export default function EditRegistration(): JSX.Element {
   const history = useHistory();
   const { user, setLoading, activeRegistration } = useContext(AppContext);
   const [initLoaded, setInitLoaded] = useState(false);
+  const [moreThanOneAllowed, setMoreThanOneAllowed] = useState(
+    activeRegistration?.moreThanOneAllowed ?? true,
+  );
   const [weekStartDate, setWeekStartDate] = useState<any>(new Date());
   const [weekEndDate, setWeekEndDate] = useState<any>(new Date());
   const [registrationOpenTime, setRegistrationOpenTime] = useState<any>(
@@ -58,7 +69,7 @@ export default function EditRegistration(): JSX.Element {
       notification.warning({
         message: 'Incomplete data',
         description:
-          'You must provide the starting and ending date of the week, for which this registration will be valid!',
+          'You must provide the starting and ending date of the week, for which this event will be valid!',
       });
       return;
     }
@@ -66,14 +77,14 @@ export default function EditRegistration(): JSX.Element {
       notification.warning({
         message: 'Incomplete data',
         description:
-          'You must provide the time when people can start registering for this week!',
+          'You must provide the time when people can start registering for this event!',
       });
       return;
     }
     if (!slots?.length) {
       notification.warning({
         message: 'Incomplete data',
-        description: 'You must provide at least one slot for registration!',
+        description: 'You must provide at least one slot for the event!',
       });
       return;
     }
@@ -85,6 +96,7 @@ export default function EditRegistration(): JSX.Element {
       registrationOpenTime,
       slots,
       id: activeRegistrationId ?? uuid(),
+      moreThanOneAllowed,
     };
     const canEditRegistration =
       activeRegistrationId &&
@@ -95,7 +107,7 @@ export default function EditRegistration(): JSX.Element {
     if (canEditRegistration) {
       editActiveRegistration(activeRegistrationId, registrationData);
       setTimeout(() => {
-        history.push('/admin');
+        history.push(oldPaths.admin.path());
         setLoading(false);
       }, 2000);
     }
@@ -111,15 +123,21 @@ export default function EditRegistration(): JSX.Element {
   const onAddSlot = () => {
     const newSlot: SlotData = {
       id: uuid(),
-      testDay: 'Monday',
-      testHours: [defaultNewHour],
-      officeDays: ['Monday'],
+      slotName: '',
+      slotSummary: '',
+      testHours: [
+        {
+          hour: defaultHour,
+          places: defaultPlaces,
+          id: uuid(),
+        },
+      ],
     };
     setSlots([...slots, newSlot]);
   };
-  const onTestDayChange = (id: string, value: any) => {
+  const onSlotNameChange = (id: string, value: any) => {
     const fixedSlots = slots.map(slot =>
-      slot.id === id ? { ...slot, testDay: value } : slot,
+      slot.id === id ? { ...slot, slotName: value } : slot,
     );
     setSlots(fixedSlots);
   };
@@ -129,9 +147,9 @@ export default function EditRegistration(): JSX.Element {
     );
     setSlots(fixedSlots);
   };
-  const onOfficeDaysChange = (id: string, value: any) => {
+  const onSlotSummaryChange = (id: string, value: any) => {
     const fixedSlots = slots.map(slot =>
-      slot.id === id ? { ...slot, officeDays: value } : slot,
+      slot.id === id ? { ...slot, slotSummary: value } : slot,
     );
     setSlots(fixedSlots);
   };
@@ -140,13 +158,13 @@ export default function EditRegistration(): JSX.Element {
     setSlots(fixedSlots);
   };
 
-  const onBack = () => history.push('/admin');
+  const onBack = () => history.push(oldPaths.admin.path());
 
   return (
     <Flex column style={{ maxWidth: '1024px', margin: 'auto' }}>
       <Header>
         <Title level={2} style={{ marginBottom: '4px' }}>
-          Edit active registration
+          Edit active event
         </Title>
         <p>
           Logged in as {user?.displayName ?? '-'} ({user?.email ?? '-'})
@@ -154,10 +172,10 @@ export default function EditRegistration(): JSX.Element {
       </Header>
       {!initLoaded && <Spin size="large" />}
       {initLoaded && (
-        <Flex row align justify style={{ flexWrap: 'wrap' }}>
+        <Flex row justify style={{ flexWrap: 'wrap' }}>
           <Flex column>
             <Card
-              title="Select the week of the registration"
+              title="Select the week of the event"
               style={{ margin: '8px', maxWidth: '400px' }}>
               <Flex column align justify>
                 <DatePicker
@@ -175,16 +193,9 @@ export default function EditRegistration(): JSX.Element {
                 />
               </Flex>
             </Card>
-            <Card
-              title="Select time when people can start registering"
-              style={{ margin: '8px', maxWidth: '400px' }}>
-              <Flex column align justify>
-                <p>
-                  Date selected here will be the time from which people can
-                  start registering for their preferred time slots. This is to
-                  ensure that everyone have a fair chance to get the slot they
-                  want.
-                </p>
+            <Card title="Options" style={{ margin: '8px', maxWidth: '400px' }}>
+              <RegistrationOption align>
+                <p>Date and time of opening registration</p>
                 <DatePicker
                   selected={registrationOpenTime}
                   onChange={onStartDateChange}
@@ -205,26 +216,32 @@ export default function EditRegistration(): JSX.Element {
                     </Flex>
                   )}
                 />
-              </Flex>
+              </RegistrationOption>
+              <RegistrationOption align>
+                <p>Allow selecting more than one option per slot</p>
+                <Switch
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  checked={moreThanOneAllowed}
+                  onChange={setMoreThanOneAllowed}
+                />
+              </RegistrationOption>
             </Card>
           </Flex>
-          <Card
-            title="Add slots for testing"
-            style={{ margin: '8px', maxWidth: '500px' }}>
+          <Card title="Add slots" style={{ margin: '8px', maxWidth: '500px' }}>
             <Flex column>
               <p>
-                Here you can choose a day when testing is carried out, hours
-                during which testing happens, and the days during which employee
-                is eligible to come to the office after test.
+                Here you can customize slots for people to choose when
+                registering.
               </p>
               {slots?.map((slot: SlotData, index: number) => {
                 return (
                   <Slot
                     slot={slot}
                     key={`slot-${index}`}
-                    onTestDayChange={onTestDayChange}
+                    onSlotNameChange={onSlotNameChange}
                     onTestHoursChange={onTestHoursChange}
-                    onOfficeDaysChange={onOfficeDaysChange}
+                    onSlotSummaryChange={onSlotSummaryChange}
                     onSlotDelete={onSlotDelete}
                   />
                 );
@@ -248,7 +265,7 @@ export default function EditRegistration(): JSX.Element {
           Cancel
         </Button>
         <Popconfirm
-          title="Are you sure you want to save your changes to active registration?"
+          title="Are you sure you want to save your changes to active event?"
           onConfirm={onEditActiveRegistration}
           okText="Do it"
           okButtonProps={{ danger: true }}
@@ -256,7 +273,7 @@ export default function EditRegistration(): JSX.Element {
           cancelText="Nope :c"
           placement="top">
           <Button type="primary" size="large" danger>
-            Save changes to active registration
+            Save changes to active event
           </Button>
         </Popconfirm>
       </Header>

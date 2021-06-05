@@ -7,7 +7,7 @@ import { oldPaths } from '../shared';
 
 const { Title } = Typography;
 
-export default function Home(): JSX.Element {
+export default function Login(): JSX.Element {
   const history = useHistory();
   const { user, setUser, gapiLoaded } = useContext(AppContext);
 

@@ -13,8 +13,8 @@ export const Choice = styled.div.attrs(
     return { style };
   },
 )<{ availability?: number; chosen?: boolean }>`
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border: 1px solid #eee;
   box-sizing: border-box;
   border-radius: 4px;
@@ -49,12 +49,12 @@ export const Hour = styled.div.attrs(
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
 `;
 
 export const Places = styled.div`
   font-size: 12px;
-  color: #333;
+  color: #434343;
   padding: 8px;
 `;

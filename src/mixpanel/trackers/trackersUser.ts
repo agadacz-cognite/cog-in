@@ -7,7 +7,7 @@ export const newUserRegistrationTracker = (
 ): void =>
   track({
     email,
-    event: 'New registration',
+    event: 'registration.new',
     eventOptions: { timestamp: Date.now(), ...slots },
   });
 
@@ -17,7 +17,7 @@ export const failedNewUserRegistrationTracker = (
 ): void =>
   track({
     email,
-    event: 'New registration FAIL',
+    event: 'registration.new.ERROR',
     eventOptions: { timestamp: Date.now(), failReason },
   });
 
@@ -28,7 +28,7 @@ export const editUserRegistrationTracker = (
 ): void =>
   track({
     email,
-    event: 'Edit registration',
+    event: 'registration.edit',
     eventOptions: { timestamp: Date.now(), ...slots },
   });
 
@@ -38,7 +38,7 @@ export const failedEditUserRegistrationTracker = (
 ): void =>
   track({
     email,
-    event: 'Edit registration FAIL',
+    event: 'registration.edit.ERROR',
     eventOptions: { timestamp: Date.now(), failReason },
   });
 
@@ -46,7 +46,7 @@ export const failedEditUserRegistrationTracker = (
 export const deleteUserRegistrationTracker = (email: string): void =>
   track({
     email,
-    event: 'Delete registration',
+    event: 'registration.delete',
     eventOptions: { timestamp: Date.now() },
   });
 
@@ -56,6 +56,6 @@ export const failedDeleteUserRegistrationTracker = (
 ): void =>
   track({
     email,
-    event: 'Delete registration FAIL',
+    event: 'registration.delete.ERROR',
     eventOptions: { timestamp: Date.now(), failReason },
   });

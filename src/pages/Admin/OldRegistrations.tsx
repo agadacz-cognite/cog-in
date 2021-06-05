@@ -18,6 +18,7 @@ import {
   getRegistrationsForExcel,
   RegistrationData,
   isDev,
+  oldPaths,
 } from '../../shared';
 
 const { SubMenu } = Menu;
@@ -51,7 +52,7 @@ export default function OldRegistrations(): JSX.Element {
     }
   };
   const onWeekPreview = (weekId: string | undefined) =>
-    history.push(`/admin/preview/${weekId}`);
+    history.push(oldPaths.adminPreview.path(weekId));
   const onWeekExport = async (weekId: string | undefined) => {
     const {
       final: registrations,
@@ -73,7 +74,7 @@ export default function OldRegistrations(): JSX.Element {
     XLSX.writeFile(workbook, `${fileTitle}.xlsx`);
   };
   const onWeekClick = (item: any) => setSelectedWeek(item?.key ?? undefined);
-  const onBack = () => history.push('/admin');
+  const onBack = () => history.push(oldPaths.admin.path());
 
   const iconToShow = (week: RegistrationData) => {
     if (week.isDev) {

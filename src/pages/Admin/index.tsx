@@ -16,6 +16,7 @@ import { closeActiveRegistration } from '../../firebase';
 import {
   getRegistrationsForExcel,
   savePreregistrationEmails,
+  oldPaths,
 } from '../../shared';
 
 const { Title } = Typography;
@@ -72,20 +73,21 @@ export default function Admin(): JSX.Element {
       await savePreregistrationEmails(currentPreregistrationEmails);
       setLoading(false);
     } else {
-      notification.warning({
-        message: 'No emails set',
-        description: 'You havent set any emails to preregister!',
-      });
+      setLoading(true);
+      await savePreregistrationEmails([]);
+      setLoading(false);
     }
   };
   const onEditActiveRegistration = () =>
-    history.push(`/admin/editweek/${activeRegistration?.id}`);
+    history.push(oldPaths.adminEditEvent.path(activeRegistration?.id));
   const onActiveRegistrationClose = () => closeActiveRegistration();
   const onPreviewRegisteredUsers = () =>
-    history.push(`/admin/preview/${activeRegistration?.id}`);
-  const onCreateNewRegistration = () => history.push('/admin/newweek');
-  const onSeeOldRegistrations = () => history.push('/admin/oldweeks');
-  const onBack = () => history.push('/start');
+    history.push(oldPaths.adminPreview.path(activeRegistration?.id));
+  const onCreateNewRegistration = () =>
+    history.push(oldPaths.adminNewEvent.path());
+  const onSeeOldRegistrations = () =>
+    history.push(oldPaths.adminArchive.path());
+  const onBack = () => history.push(oldPaths.home.path());
 
   return (
     <Flex column style={{ margin: 'auto' }}>
@@ -162,7 +164,7 @@ export default function Admin(): JSX.Element {
                         </div>
                         <div>
                           You won&apos;t be able to reopen it and people
-                          won&apos;t be able to register for this week anymore.
+                          won&apos;t be able to register for this event anymore.
                         </div>
                         <div>
                           You can still view and export the list of all

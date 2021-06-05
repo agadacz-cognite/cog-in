@@ -1,8 +1,9 @@
 import { v4 as uuid } from 'uuid';
 import { SlotData } from '../../shared';
 
-export const defaultPlaces = 200;
-export const defaultHour = 'all day';
+export const defaultPlaces = 50;
+export const defaultHour = '8:00';
+export const defaultSlotName = '';
 export const defaultMaxPlaces = 1000;
 export const defaultNewHour = {
   hour: defaultHour,
@@ -12,20 +13,9 @@ export const defaultNewHour = {
 
 export const defaultSlot: SlotData = {
   id: uuid(),
-  testDay: 'Monday',
-  testHours: [
-    { hour: 'all day', places: 200, id: uuid() },
-    // { hour: '8:00', places: 20, id: uuid() },
-    // { hour: '8:20', places: 20, id: uuid() },
-    // { hour: '8:40', places: defaultPlaces, id: uuid() },
-    // { hour: '9:00', places: defaultPlaces, id: uuid() },
-    // { hour: '9:20', places: defaultPlaces, id: uuid() },
-    // { hour: '9:40', places: defaultPlaces, id: uuid() },
-    // { hour: '10:00', places: defaultPlaces, id: uuid() },
-    // { hour: '10:20', places: defaultPlaces, id: uuid() },
-  ],
-  // officeDays: ['Monday', 'Tuesday', 'Wednesday'],
-  officeDays: ['Monday'],
+  slotName: defaultSlotName,
+  slotSummary: '',
+  testHours: [{ hour: '8:00', places: defaultPlaces, id: uuid() }],
 };
 
 export const possibleDays = [

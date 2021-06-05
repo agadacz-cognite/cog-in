@@ -21,8 +21,9 @@ type MappedHoursProps = {
 
 export default function MappedHours(props: MappedHoursProps): JSX.Element {
   const { id, chosenDays, testHours, setTestHours } = props;
-  const { slotsData } = useContext(AppContext);
+  const { slotsData, activeRegistration } = useContext(AppContext);
   const slotToMap = chosenDays.find((slot: SlotData) => slot.id === id);
+  const moreThanOneAllowed = activeRegistration?.moreThanOneAllowed ?? false;
 
   const isChosenSlotAndHour = (slotId: string, hourId: string) => {
     const chosenHour = testHours.find(
@@ -46,31 +47,37 @@ export default function MappedHours(props: MappedHoursProps): JSX.Element {
         (testHour: ChosenHour) => testHour.hourId !== hourId,
       );
       setTestHours(fixedChosenSlots);
-    } else if (chosenSlot) {
-      // this slot has hour selected; change the selection for the slot
-      const fixedChosenSlots = [
-        ...testHours.filter(
-          (testHour: ChosenHour) => testHour.slotId !== slotId,
-        ),
-        {
-          slotId,
-          hourId,
-        },
-      ];
-      setTestHours(fixedChosenSlots);
-    } else if (!chosenSlot && !chosenSlotAndHour) {
-      // nothing is selected; select
-      if (!available) {
-        return;
+    } else {
+      // if user can choose only one slot
+      if (!moreThanOneAllowed) {
+        const fixedChosenSlots = [{ slotId, hourId }];
+        setTestHours(fixedChosenSlots);
+      } else if (chosenSlot) {
+        // this slot has hour selected; change the selection for the slot
+        const fixedChosenSlots = [
+          ...testHours.filter(
+            (testHour: ChosenHour) => testHour.slotId !== slotId,
+          ),
+          {
+            slotId,
+            hourId,
+          },
+        ];
+        setTestHours(fixedChosenSlots);
+      } else if (!chosenSlot) {
+        // nothing is selected; select
+        if (!available) {
+          return;
+        }
+        const fixedChosenSlots = [
+          ...testHours,
+          {
+            slotId,
+            hourId,
+          },
+        ];
+        setTestHours(fixedChosenSlots);
       }
-      const fixedChosenSlots = [
-        ...testHours,
-        {
-          slotId,
-          hourId,
-        },
-      ];
-      setTestHours(fixedChosenSlots);
     }
   };
 
@@ -110,13 +117,11 @@ export default function MappedHours(props: MappedHoursProps): JSX.Element {
         fixedTestHour.totalPlaces - fixedTestHour.takenPlaces;
       const percentOfPlacesTaken = remainingPlaces / fixedTestHour.totalPlaces;
 
-      // const dupa = translateHourIdToHour(testHours);
-
       return (
         <Tooltip
           key={`mapped-hour-${index}-${hourId}-ok`}
           title={
-            !available && 'All of the slots for this hour are already taken :C'
+            !available && 'All of the places for this slot are already taken :C'
           }>
           <Choice
             key={`slot-${id}-${hourId}`}
