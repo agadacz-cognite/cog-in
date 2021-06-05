@@ -22,7 +22,7 @@ import {
 } from '../../context';
 import { editActiveRegistration } from '../../firebase';
 import { SlotData, isWeekday, randomFarAwayDate, oldPaths } from '../../shared';
-import { defaultNewHour } from './utils';
+import { defaultHour, defaultPlaces } from './utils';
 import Slot from './Slot';
 import { RegistrationOption } from './components';
 
@@ -124,8 +124,14 @@ export default function EditRegistration(): JSX.Element {
     const newSlot: SlotData = {
       id: uuid(),
       slotName: '',
-      testHours: [defaultNewHour],
       slotSummary: '',
+      testHours: [
+        {
+          hour: defaultHour,
+          places: defaultPlaces,
+          id: uuid(),
+        },
+      ],
     };
     setSlots([...slots, newSlot]);
   };

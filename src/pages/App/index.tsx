@@ -43,80 +43,41 @@ export default function App(): JSX.Element {
   }, []);
 
   return (
-    <Router>
-      <Switch>
-        <Route exact path={oldPaths.login.staticPath}>
-          <Wrapper background={background}>
-            {isDev && <DevBanner />}
-            <LinksBar />
-            <Loader $loading={loading} />
+    <Wrapper background={background}>
+      {isDev && <DevBanner />}
+      <LinksBar />
+      <Loader $loading={loading} />
+      <Router>
+        <Switch>
+          <Route exact path={oldPaths.login.staticPath}>
             <Home />
-          </Wrapper>
-        </Route>
-        <Route exact path={oldPaths.home.staticPath}>
-          <Wrapper background={background}>
-            {isDev && <DevBanner />}
-            <LinksBar />
-            <Loader $loading={loading} />
+          </Route>
+          <Route exact path={oldPaths.home.staticPath}>
             <DaysSelection />
-          </Wrapper>
-        </Route>
-        <Route exact path={oldPaths.selection.staticPath}>
-          <Wrapper background={background}>
-            {isDev && <DevBanner />}
-            <LinksBar />
-            <Loader $loading={loading} />
+          </Route>
+          <Route exact path={oldPaths.selection.staticPath}>
             <HourSelection />
-          </Wrapper>
-        </Route>
-        <Route exact path={oldPaths.admin.staticPath}>
-          <Wrapper background={background}>
-            {isDev && <DevBanner />}
-            <LinksBar />
-            <Loader $loading={loading} />
+          </Route>
+          <Route exact path={oldPaths.admin.staticPath}>
             <Admin />
-          </Wrapper>
-        </Route>
-        <Route exact path={oldPaths.adminNewEvent.staticPath}>
-          <Wrapper background={background}>
-            {isDev && <DevBanner />}
-            <LinksBar />
-            <Loader $loading={loading} />
+          </Route>
+          <Route exact path={oldPaths.adminNewEvent.staticPath}>
             <NewRegistration />
-          </Wrapper>
-        </Route>
-        <Route exact path={oldPaths.adminEditEvent.staticPath}>
-          <Wrapper background={background}>
-            {isDev && <DevBanner />}
-            <LinksBar />
-            <Loader $loading={loading} />
+          </Route>
+          <Route exact path={oldPaths.adminEditEvent.staticPath}>
             <EditRegistration />
-          </Wrapper>
-        </Route>
-        <Route exact path={oldPaths.adminArchive.staticPath}>
-          <Wrapper background={background}>
-            {isDev && <DevBanner />}
-            <LinksBar />
-            <Loader $loading={loading} />
+          </Route>
+          <Route exact path={oldPaths.adminArchive.staticPath}>
             <OldRegistrations />
-          </Wrapper>
-        </Route>
-        <Route exact path={oldPaths.adminPreview.staticPath}>
-          <Wrapper background={background}>
-            {isDev && <DevBanner />}
-            <LinksBar />
-            <Loader $loading={loading} />
+          </Route>
+          <Route exact path={oldPaths.adminPreview.staticPath}>
             <PreviewRegistration />
-          </Wrapper>
-        </Route>
-        <Route>
-          <Wrapper background={background}>
-            {isDev && <DevBanner />}
-            <LinksBar />
+          </Route>
+          <Route>
             <NotFound />
-          </Wrapper>
-        </Route>
-      </Switch>
-    </Router>
+          </Route>
+        </Switch>
+      </Router>
+    </Wrapper>
   );
 }
