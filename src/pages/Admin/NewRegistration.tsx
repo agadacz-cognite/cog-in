@@ -66,7 +66,7 @@ export default function NewRegistration(): JSX.Element {
       notification.warning({
         message: 'Incomplete data',
         description:
-          'You must provide the time when people can start registering for this week!',
+          'You must provide the time when people can start registering for this event!',
       });
       return;
     }

@@ -73,10 +73,9 @@ export default function Admin(): JSX.Element {
       await savePreregistrationEmails(currentPreregistrationEmails);
       setLoading(false);
     } else {
-      notification.warning({
-        message: 'No emails set',
-        description: 'You havent set any emails to preregister!',
-      });
+      setLoading(true);
+      await savePreregistrationEmails([]);
+      setLoading(false);
     }
   };
   const onEditActiveRegistration = () =>
@@ -165,7 +164,7 @@ export default function Admin(): JSX.Element {
                         </div>
                         <div>
                           You won&apos;t be able to reopen it and people
-                          won&apos;t be able to register for this week anymore.
+                          won&apos;t be able to register for this event anymore.
                         </div>
                         <div>
                           You can still view and export the list of all

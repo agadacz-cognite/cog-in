@@ -253,7 +253,7 @@ export const savePreregistrationEmails = (emails: string[]): Promise<void> => {
       .then(() => {
         notification.success({
           message: 'Yay!',
-          description: 'You successfully added emails to preregistration list!',
+          description: 'You successfully changed preregistration list!',
         });
         resolve();
       })

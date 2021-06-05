@@ -206,7 +206,9 @@ export default function DaysSelection(): JSX.Element {
 
   const ifNoRegistration = (): JSX.Element | undefined => {
     if (!activeRegistration) {
-      return <p>There is no active registration at the moment!</p>;
+      return (
+        <Title level={5}>There is no active registration at the moment!</Title>
+      );
     }
     return undefined;
   };
@@ -222,7 +224,7 @@ export default function DaysSelection(): JSX.Element {
     ) {
       return (
         <StyledFlex column justify align>
-          {canPreregister && !registrationIsOpen ? (
+          {canPreregister && !registrationIsOpen && (
             <Flex
               row
               align
@@ -233,18 +235,8 @@ export default function DaysSelection(): JSX.Element {
                 You can preregister!
               </Title>
             </Flex>
-          ) : (
-            <Title level={4}>
-              {new Date(
-                (activeRegistration?.week[0]?.seconds ?? 0) * 1000,
-              ).toLocaleDateString()}
-              -
-              {new Date(
-                (activeRegistration?.week[1]?.seconds ?? 0) * 1000,
-              ).toLocaleDateString()}
-            </Title>
           )}
-          <Title level={5}>You didn&apos;t register for this week yet.</Title>
+          <Title level={5}>You didn&apos;t register for this event yet.</Title>
         </StyledFlex>
       );
     }
@@ -328,15 +320,6 @@ export default function DaysSelection(): JSX.Element {
     if (isUserRegistered) {
       return (
         <PanelDone column align justify>
-          <Title level={4}>
-            {new Date(
-              (activeRegistration?.week[0]?.seconds ?? 0) * 1000,
-            ).toLocaleDateString()}{' '}
-            -{' '}
-            {new Date(
-              (activeRegistration?.week[1]?.seconds ?? 0) * 1000,
-            ).toLocaleDateString()}
-          </Title>
           {(usersRegistration?.testHours ?? []).map(
             (chosenHour: ChosenHour, index: number) => {
               const week = activeRegistration?.slots.find(
