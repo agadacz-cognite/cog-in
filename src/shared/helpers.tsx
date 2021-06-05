@@ -73,7 +73,7 @@ export const sendEmail = ({
     SecureToken: process.env.REACT_APP_EMAIL_API_KEY,
     Username: 'CogIN! Registration bot',
     To: email,
-    From: 'cogcovidtest@gmail.com',
+    From: 'cog.in.bot@gmail.com',
     Subject: subject,
     Body: content,
   });
@@ -106,7 +106,7 @@ export const sendEmailToUser = (
   const userFirstName =
     registeredUser.name?.split(' ')?.[0] ?? 'Unknown Person';
   const subject = `🎇 You have registered to an event! Week ${week}`;
-  const content = `Hello ${userFirstName}! You just registered for an event: ${eventTitle}. Details: ${userHours}.`;
+  const content = `Hello ${userFirstName}! You just registered for an event: ${eventTitle.text}. Details: ${userHours}.`;
 
   sendEmail({
     email: registeredUser.email,

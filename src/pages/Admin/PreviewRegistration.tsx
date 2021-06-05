@@ -126,7 +126,7 @@ const columns = () => [
     render: (item: any) => {
       const tooLateTooltip =
         'This person has signed up after the slot was already unavailable. Please contact them to rebook. Clicking their name will redirect you to email service with prepared template.';
-      const tooLateEmail = `mailto:${item.email}?subject=❗❗ You need to rebook your event registration 😿&body=Unfortunately you have to rebook your registration for the event: ${eventTitle}.%0A%0ADue to a database lag your registration went through already after all the places for the slot were already taken.%0A%0AWe sincerely apologize for inconvenience.`;
+      const tooLateEmail = `mailto:${item.email}?subject=❗❗ You need to rebook your event registration 😿&body=Unfortunately you have to rebook your registration for the event: ${eventTitle.text}.%0A%0ADue to a database lag your registration went through already after all the places for the slot were already taken.%0A%0AWe sincerely apologize for inconvenience.`;
       return (
         <span style={{ fontWeight: 'bold' }}>
           {item.registeredTooLate ? (

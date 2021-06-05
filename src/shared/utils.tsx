@@ -111,7 +111,7 @@ export const getRegistrationsForThisWeek = async (
           registeredAt: registeredUser?.registeredTimestamp ?? 0,
           name: registeredUser?.name ?? registeredUser?.email ?? '<unknown>',
           hour: usersRegisteredHourFixed,
-          email: registeredUser?.email ?? 'cogcovidtest@gmail.com',
+          email: registeredUser?.email ?? 'cog.in.bot@gmail.com',
           registeredTooLate,
           comment: registeredUser?.comment,
         };

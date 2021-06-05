@@ -76,8 +76,6 @@ export default function DaysSelection(): JSX.Element {
     setLoading,
   } = useContext(AppContext);
 
-  console.log(activeRegistration);
-
   useBackIfNotLogged();
   useIsUserAdmin();
   useActiveRegistration();
@@ -113,8 +111,8 @@ export default function DaysSelection(): JSX.Element {
         .join(', ');
       const userFirstName =
         usersRegistration?.name?.split(' ')?.[0] ?? 'Unknown Person';
-      const subject = `🎇 You have deleted registration for the event: ${eventTitle}`;
-      const content = `Hello ${userFirstName}! You just removed your registration for the event: ${eventTitle}. Removed registration: ${userHours}.`;
+      const subject = `🎇 You have deleted registration for the event: ${eventTitle.text}`;
+      const content = `Hello ${userFirstName}! You just removed your registration for the event: ${eventTitle.text}. Removed registration: ${userHours}.`;
       setLoading(true);
       await removeUserRegistration(weekId, email);
       sendEmail({
@@ -153,7 +151,7 @@ export default function DaysSelection(): JSX.Element {
         .signIn()
         .then(() => {
           const covidEvents = userTestHours.map((userTestHour: any) => ({
-            summary: `🎇‧͙⁺˚*･༓☾ ${eventTitle} ☽༓･*˚⁺‧͙ 🎇`,
+            summary: `🎇‧͙⁺˚*･༓☾ ${eventTitle.text} ☽༓･*˚⁺‧͙ 🎇`,
             location: 'Oksenøyveien 10',
             description:
               '✨EVENT DETAILS✨\n\n' +

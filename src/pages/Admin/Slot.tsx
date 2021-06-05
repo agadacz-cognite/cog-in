@@ -35,7 +35,6 @@ export default function Slot(props: Props): JSX.Element {
       ...defaultNewHour,
       id: uuid(),
     };
-    console.log(newTestHour);
     const newTestHours: TestHourInSlot[] = [...testHours, newTestHour];
     onTestHoursChange(id, newTestHours);
   };
