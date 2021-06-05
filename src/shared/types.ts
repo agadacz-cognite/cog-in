@@ -42,6 +42,7 @@ export type RegistrationData = {
   legacy?: boolean;
   isDev?: boolean;
   openedBy?: string;
+  moreThanOneAllowed: boolean;
 };
 
 export type RegisteredUser = {

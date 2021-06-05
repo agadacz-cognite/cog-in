@@ -4,7 +4,14 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'moment/locale/en-gb';
 import { v4 as uuid } from 'uuid';
-import { Typography, Button, Popconfirm, Spin, notification } from 'antd';
+import {
+  Typography,
+  Button,
+  Popconfirm,
+  Spin,
+  Switch,
+  notification,
+} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { Flex, Header, Card } from '../../components';
@@ -17,6 +24,7 @@ import { editActiveRegistration } from '../../firebase';
 import { SlotData, isWeekday, randomFarAwayDate, oldPaths } from '../../shared';
 import { defaultNewHour } from './utils';
 import Slot from './Slot';
+import { RegistrationOption } from './components';
 
 const { Title } = Typography;
 
@@ -24,6 +32,9 @@ export default function EditRegistration(): JSX.Element {
   const history = useHistory();
   const { user, setLoading, activeRegistration } = useContext(AppContext);
   const [initLoaded, setInitLoaded] = useState(false);
+  const [moreThanOneAllowed, setMoreThanOneAllowed] = useState(
+    activeRegistration?.moreThanOneAllowed ?? true,
+  );
   const [weekStartDate, setWeekStartDate] = useState<any>(new Date());
   const [weekEndDate, setWeekEndDate] = useState<any>(new Date());
   const [registrationOpenTime, setRegistrationOpenTime] = useState<any>(
@@ -85,6 +96,7 @@ export default function EditRegistration(): JSX.Element {
       registrationOpenTime,
       slots,
       id: activeRegistrationId ?? uuid(),
+      moreThanOneAllowed,
     };
     const canEditRegistration =
       activeRegistrationId &&
@@ -154,7 +166,7 @@ export default function EditRegistration(): JSX.Element {
       </Header>
       {!initLoaded && <Spin size="large" />}
       {initLoaded && (
-        <Flex row align justify style={{ flexWrap: 'wrap' }}>
+        <Flex row justify style={{ flexWrap: 'wrap' }}>
           <Flex column>
             <Card
               title="Select the week of the event"
@@ -175,15 +187,9 @@ export default function EditRegistration(): JSX.Element {
                 />
               </Flex>
             </Card>
-            <Card
-              title="Select time when registration opens"
-              style={{ margin: '8px', maxWidth: '400px' }}>
-              <Flex column align justify>
-                <p>
-                  Date selected here will be the time from which people can
-                  start registering. This is to ensure that everyone have a fair
-                  chance to get the slot they want.
-                </p>
+            <Card title="Options" style={{ margin: '8px', maxWidth: '400px' }}>
+              <RegistrationOption align>
+                <p>Date and time of opening registration</p>
                 <DatePicker
                   selected={registrationOpenTime}
                   onChange={onStartDateChange}
@@ -204,7 +210,16 @@ export default function EditRegistration(): JSX.Element {
                     </Flex>
                   )}
                 />
-              </Flex>
+              </RegistrationOption>
+              <RegistrationOption align>
+                <p>Allow selecting more than one option per slot</p>
+                <Switch
+                  checkedChildren="Yes"
+                  unCheckedChildren="No"
+                  checked={moreThanOneAllowed}
+                  onChange={setMoreThanOneAllowed}
+                />
+              </RegistrationOption>
             </Card>
           </Flex>
           <Card title="Add slots" style={{ margin: '8px', maxWidth: '500px' }}>

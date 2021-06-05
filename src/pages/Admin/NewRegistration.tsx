@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'moment/locale/en-gb';
 import { v4 as uuid } from 'uuid';
-import { Typography, Button, Popconfirm, notification } from 'antd';
+import { Typography, Button, Popconfirm, Switch, notification } from 'antd';
 import { PlusOutlined, WarningOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { Flex, Header, Card } from '../../components';
@@ -23,12 +23,14 @@ import {
 } from '../../shared';
 import { defaultSlot, defaultHour, defaultPlaces } from './utils';
 import Slot from './Slot';
+import { RegistrationOption } from './components';
 
 const { Title } = Typography;
 
 export default function NewRegistration(): JSX.Element {
   const history = useHistory();
   const { user, setLoading } = useContext(AppContext);
+  const [moreThanOneAllowed, setMoreThanOneAllowed] = useState(true);
   const [weekStartDate, setWeekStartDate] = useState<any | undefined>();
   const [weekEndDate, setWeekEndDate] = useState<any | undefined>();
   const [registrationOpenTime, setRegistrationOpenTime] = useState<any>(
@@ -83,6 +85,7 @@ export default function NewRegistration(): JSX.Element {
       slots,
       id: uuid(),
       openedBy: user.email,
+      moreThanOneAllowed,
     };
     if (weekStartDate && weekEndDate && registrationOpenTime && slots) {
       createActiveRegistration(registrationData);
@@ -150,7 +153,7 @@ export default function NewRegistration(): JSX.Element {
           Logged in as {user?.displayName ?? '-'} ({user?.email ?? '-'})
         </p>
       </Header>
-      <Flex row align justify style={{ flexWrap: 'wrap' }}>
+      <Flex row justify style={{ flexWrap: 'wrap' }}>
         <Flex column>
           <Card
             title="Select the week of the registration"
@@ -171,15 +174,9 @@ export default function NewRegistration(): JSX.Element {
               />
             </Flex>
           </Card>
-          <Card
-            title="Select time when people can start registering"
-            style={{ margin: '8px', maxWidth: '400px' }}>
-            <Flex column align justify>
-              <p>
-                Date selected here will be the time from which people can start
-                registering for their preferred time slots. This is to ensure
-                that everyone have a fair chance to get the slot they want.
-              </p>
+          <Card title="Options" style={{ margin: '8px', maxWidth: '400px' }}>
+            <RegistrationOption align>
+              <p>Date and time of opening registration</p>
               <DatePicker
                 selected={registrationOpenTime}
                 onChange={onStartDateChange}
@@ -200,7 +197,16 @@ export default function NewRegistration(): JSX.Element {
                   </Flex>
                 )}
               />
-            </Flex>
+            </RegistrationOption>
+            <RegistrationOption align>
+              <p>Allow selecting more than one option per slot</p>
+              <Switch
+                checkedChildren="Yes"
+                unCheckedChildren="No"
+                checked={moreThanOneAllowed}
+                onChange={setMoreThanOneAllowed}
+              />
+            </RegistrationOption>
           </Card>
         </Flex>
         <Card
