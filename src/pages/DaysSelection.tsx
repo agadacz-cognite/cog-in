@@ -76,6 +76,8 @@ export default function DaysSelection(): JSX.Element {
     setLoading,
   } = useContext(AppContext);
 
+  console.log(activeRegistration);
+
   useBackIfNotLogged();
   useIsUserAdmin();
   useActiveRegistration();
@@ -95,11 +97,6 @@ export default function DaysSelection(): JSX.Element {
     const weekId = usersRegistration?.weekId;
     const email = usersRegistration?.email;
     if (isUserRegistered && weekId && email) {
-      const week = `${new Date(
-        (activeRegistration?.week[0]?.seconds ?? 0) * 1000,
-      ).toLocaleDateString()} - ${new Date(
-        (activeRegistration?.week[1]?.seconds ?? 0) * 1000,
-      ).toLocaleDateString()}`;
       const userHours = usersRegistration?.testHours
         .map((testHour: ChosenHour) => {
           const week = activeRegistration?.slots.find(
@@ -116,8 +113,8 @@ export default function DaysSelection(): JSX.Element {
         .join(', ');
       const userFirstName =
         usersRegistration?.name?.split(' ')?.[0] ?? 'Unknown Person';
-      const subject = '💉 You have deleted your COVID test registration';
-      const content = `Hello ${userFirstName}! You just removed your appointnment for the event ${week}. Removed registration: ${userHours}.`;
+      const subject = `🎇 You have deleted registration for the event: ${eventTitle}`;
+      const content = `Hello ${userFirstName}! You just removed your registration for the event: ${eventTitle}. Removed registration: ${userHours}.`;
       setLoading(true);
       await removeUserRegistration(weekId, email);
       sendEmail({
@@ -156,8 +153,8 @@ export default function DaysSelection(): JSX.Element {
         .signIn()
         .then(() => {
           const covidEvents = userTestHours.map((userTestHour: any) => ({
-            summary: '💉‧͙⁺˚*･༓☾ COVID test ☽༓･*˚⁺‧͙ 💉',
-            location: 'Oksenøyveien 10, Grand Hall',
+            summary: `🎇‧͙⁺˚*･༓☾ ${eventTitle} ☽༓･*˚⁺‧͙ 🎇`,
+            location: 'Oksenøyveien 10',
             description:
               '✨EVENT DETAILS✨\n\n' +
               eventDetails.map(g => g.text).join('\n\n- '),

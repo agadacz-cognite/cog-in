@@ -7,6 +7,7 @@ import {
   ChosenHour,
   TestHourInSlot,
 } from './types';
+import { eventTitle } from '../shared';
 
 export const randomFarAwayDate = new Date(1934832714000);
 
@@ -24,7 +25,7 @@ export const errorHandler = (error: any): void => {
         <p>
           Click{' '}
           <a
-            href={`mailto:anna.gadacz@cognite.com?subject=COVID Project issue, fix fast pls&body=${String(
+            href={`mailto:anna.gadacz@cognite.com?subject=CogIN! Project issue, fix fast pls&body=${String(
               error,
             )}`}>
             HERE{' '}
@@ -70,7 +71,7 @@ export const sendEmail = ({
 }: SendEmailProps): void => {
   (window as any).Email.send({
     SecureToken: process.env.REACT_APP_EMAIL_API_KEY,
-    Username: 'Cognite COVID Test Bot',
+    Username: 'CogIN! Registration bot',
     To: email,
     From: 'cogcovidtest@gmail.com',
     Subject: subject,
@@ -104,8 +105,8 @@ export const sendEmailToUser = (
     .join(', ');
   const userFirstName =
     registeredUser.name?.split(' ')?.[0] ?? 'Unknown Person';
-  const subject = `💉 You have registered to an event! Week ${week}`;
-  const content = `Hello ${userFirstName}! You just registered for an event for the week ${week}. Details: ${userHours}.`;
+  const subject = `🎇 You have registered to an event! Week ${week}`;
+  const content = `Hello ${userFirstName}! You just registered for an event: ${eventTitle}. Details: ${userHours}.`;
 
   sendEmail({
     email: registeredUser.email,

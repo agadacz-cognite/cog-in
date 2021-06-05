@@ -12,6 +12,7 @@ import {
   stringCompare,
   getRegistrationsForThisWeek,
   oldPaths,
+  eventTitle,
 } from '../../shared/';
 import { Flex, Header, Table } from '../../components';
 
@@ -85,7 +86,7 @@ export default function PreviewRegistration(): JSX.Element {
                   </Title>
                 </Header>
                 <Table
-                  columns={columns(weekDays[index])}
+                  columns={columns()}
                   dataSource={oneSlot}
                   pagination={{ pageSize: 10, hideOnSinglePage: true }}
                 />
@@ -102,7 +103,7 @@ export default function PreviewRegistration(): JSX.Element {
   );
 }
 
-const columns = (day: string) => [
+const columns = () => [
   {
     title: 'Date',
     key: 'date',
@@ -125,7 +126,7 @@ const columns = (day: string) => [
     render: (item: any) => {
       const tooLateTooltip =
         'This person has signed up after the slot was already unavailable. Please contact them to rebook. Clicking their name will redirect you to email service with prepared template.';
-      const tooLateEmail = `mailto:${item.email}?subject=❗❗ You need to rebook your COVID test appointment 😿&body=Unfortunately you have to rebook your COVID appointment at ${day}, ${item.hour}.%0A%0ADue to a database lag your registration went through already after all the places for the slot were already taken.%0A%0AWe sincerely apologize for inconvenience.`;
+      const tooLateEmail = `mailto:${item.email}?subject=❗❗ You need to rebook your event registration 😿&body=Unfortunately you have to rebook your registration for the event: ${eventTitle}.%0A%0ADue to a database lag your registration went through already after all the places for the slot were already taken.%0A%0AWe sincerely apologize for inconvenience.`;
       return (
         <span style={{ fontWeight: 'bold' }}>
           {item.registeredTooLate ? (
