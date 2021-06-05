@@ -14,7 +14,7 @@ export const failedNewRegistrationTracker = (
 ): void =>
   track({
     email: 'ADMIN',
-    event: 'admin.registration.create.FAIL',
+    event: 'admin.registration.create.ERROR',
     eventOptions: { timestamp: Date.now(), failReason, registrationId },
   });
 
@@ -32,7 +32,7 @@ export const failedEditRegistrationTracker = (
 ): void =>
   track({
     email: 'ADMIN',
-    event: 'admin.registration.edit.FAIL',
+    event: 'admin.registration.edit.ERROR',
     eventOptions: { timestamp: Date.now(), failReason, registrationId },
   });
 
@@ -47,6 +47,6 @@ export const closeRegistrationTracker = (): void =>
 export const failedCloseRegistrationTracker = (failReason: string): void =>
   track({
     email: 'ADMIN',
-    event: 'admin.registration.close.FAIL',
+    event: 'admin.registration.close.ERROR',
     eventOptions: { timestamp: Date.now(), failReason },
   });

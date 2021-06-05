@@ -24,13 +24,13 @@ export const track = ({ email, event, eventOptions = {} }: Track): void => {
   const prefix = 'COGIN';
   try {
     mixpanel.identify(email);
-    mixpanel.track(`${prefix}_${event}`, {
+    mixpanel.track(`${prefix}.${event}`, {
       isDev,
       email,
       ...eventOptions,
     });
   } catch (error) {
-    mixpanel.track(`${prefix}_MIXPANEL_ERROR`, {
+    mixpanel.track(`${prefix}.mixpanel.ERROR`, {
       email: 'SYSTEM',
       timestamp: Date.now(),
       error,

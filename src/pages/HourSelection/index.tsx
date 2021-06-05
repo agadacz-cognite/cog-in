@@ -20,7 +20,7 @@ export default function HourSelection(): JSX.Element {
     usersRegistration,
     activeRegistration,
   } = useContext(AppContext);
-  const [comment, setComment] = useState<string | undefined>();
+  const [comment, setComment] = useState<string>('');
   const [chosenDays, setChosenDays] = useState<SlotData[]>([]);
   const [testHours, setTestHours] = useState<ChosenHour[]>([]);
 
@@ -40,12 +40,12 @@ export default function HourSelection(): JSX.Element {
   useEffect(() => {
     if (usersRegistration?.testHours) {
       setTestHours(usersRegistration.testHours);
-      setComment(usersRegistration.comment);
+      setComment(usersRegistration.comment ?? '');
     }
   }, []);
 
   const onCommentChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setComment(event.target.value);
+    setComment(event.target.value ?? '');
   const onSubmit = async () => {
     if (!activeRegistration?.id) {
       notification.warning({

@@ -21,7 +21,7 @@ import {
   randomFarAwayDate,
   oldPaths,
 } from '../../shared';
-import { defaultSlot, defaultNewHour } from './utils';
+import { defaultSlot, defaultHour, defaultPlaces } from './utils';
 import Slot from './Slot';
 
 const { Title } = Typography;
@@ -34,7 +34,19 @@ export default function NewRegistration(): JSX.Element {
   const [registrationOpenTime, setRegistrationOpenTime] = useState<any>(
     new Date(),
   );
-  const [slots, setSlots] = useState<SlotData[]>([defaultSlot]);
+  const [slots, setSlots] = useState<SlotData[]>([
+    {
+      ...defaultSlot,
+      id: uuid(),
+      testHours: [
+        {
+          hour: defaultHour,
+          places: defaultPlaces,
+          id: uuid(),
+        },
+      ],
+    },
+  ]);
 
   useBackIfNotLogged();
   useBackIfNotAdmin();
@@ -93,7 +105,13 @@ export default function NewRegistration(): JSX.Element {
       id: uuid(),
       slotName: '',
       slotSummary: '',
-      testHours: [defaultNewHour],
+      testHours: [
+        {
+          hour: defaultHour,
+          places: defaultPlaces,
+          id: uuid(),
+        },
+      ],
     };
     setSlots([...slots, newSlot]);
   };

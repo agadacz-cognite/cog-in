@@ -113,10 +113,8 @@ export const getRegistrationsForThisWeek = async (
           hour: usersRegisteredHourFixed,
           email: registeredUser?.email ?? 'cogcovidtest@gmail.com',
           registeredTooLate,
+          comment: registeredUser?.comment,
         };
-        if (registeredUser?.comment) {
-          userRegistrationData.comment = registeredUser?.comment;
-        }
         return userRegistrationData;
       });
       return users;

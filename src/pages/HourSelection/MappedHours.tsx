@@ -38,6 +38,8 @@ export default function MappedHours(props: MappedHoursProps): JSX.Element {
     return Boolean(chosenSlot);
   };
   const onHourChoose = (slotId: string, hourId: string, available: boolean) => {
+    console.log('slotId', slotId);
+    console.log('hourId', hourId);
     const chosenSlotAndHour = isChosenSlotAndHour(slotId, hourId);
     const chosenSlot = isChosenSlot(slotId);
     if (chosenSlotAndHour) {

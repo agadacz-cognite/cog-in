@@ -41,7 +41,7 @@ import {
   eventTitle,
   EventDetails,
 } from '../shared';
-import { Flex, Card, Header } from '../components';
+import { Flex, Card, Header, InfoLink } from '../components';
 
 dayjs.extend(relativeTime);
 
@@ -381,9 +381,10 @@ export default function DaysSelection(): JSX.Element {
     <Flex column style={{ margin: 'auto' }}>
       <Header>
         <Title level={2} style={{ marginBottom: '4px' }}>
-          Hello, {getUserFirstName()}!
+          {eventTitle.text}
         </Title>
-        <p>
+        <p>Hello, {getUserFirstName()}!</p>
+        <p style={{ fontSize: '0.8em' }}>
           Logged in as {user?.displayName ?? '-'} ({user?.email ?? '-'})
         </p>
       </Header>
@@ -408,18 +409,6 @@ export default function DaysSelection(): JSX.Element {
               {ifNoRegistration()}
               {ifRegistrationOpen()}
             </Flex>
-          </Card>
-          <Card style={{ width: 'auto', height: 'auto', margin: '8px' }}>
-            <ul style={{ margin: 0, padding: 0, listStyleType: 'none' }}>
-              <li>
-                Technical problems with app?{' '}
-                <a
-                  href="mailto:anna.gadacz@cognite.com?subject=CogIN Project issue, fix fast pls"
-                  onClick={() => clickContactLinkTracker(user?.email, 'Anna')}>
-                  Contact Anna!
-                </a>
-              </li>
-            </ul>
           </Card>
         </Flex>
         <Card
@@ -458,6 +447,14 @@ export default function DaysSelection(): JSX.Element {
           </StyledFlex>
         </Card>
       </Flex>
+      <InfoLink>
+        Technical problems with app?{' '}
+        <a
+          href="mailto:anna.gadacz@cognite.com?subject=CogIN Project issue, fix fast pls"
+          onClick={() => clickContactLinkTracker(user?.email, 'Anna')}>
+          Click to contact Anna.
+        </a>
+      </InfoLink>
     </Flex>
   );
 }

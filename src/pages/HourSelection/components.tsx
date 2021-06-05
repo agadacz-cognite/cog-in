@@ -55,6 +55,6 @@ export const Hour = styled.div.attrs(
 
 export const Places = styled.div`
   font-size: 12px;
-  color: #333;
+  color: #434343;
   padding: 8px;
 `;

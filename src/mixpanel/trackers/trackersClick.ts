@@ -35,7 +35,7 @@ export const failedAddCalendarEventTracker = (
 ): void =>
   track({
     email: email ?? 'UNKNOWN ENTITY',
-    event: 'event.calendar.add.FAIL',
+    event: 'event.calendar.add.ERROR',
     eventOptions: { timestamp: Date.now(), failReason },
   });
 
