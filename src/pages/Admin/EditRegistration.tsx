@@ -166,9 +166,9 @@ export default function EditRegistration(): JSX.Element {
         <Title level={2} style={{ marginBottom: '4px' }}>
           Edit active event
         </Title>
-        <p>
+        <Flex align justify style={{ fontSize: '0.8em' }}>
           Logged in as {user?.displayName ?? '-'} ({user?.email ?? '-'})
-        </p>
+        </Flex>
       </Header>
       {!initLoaded && <Spin size="large" />}
       {initLoaded && (

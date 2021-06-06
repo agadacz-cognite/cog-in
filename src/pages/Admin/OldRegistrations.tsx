@@ -169,9 +169,9 @@ export default function OldRegistrations(): JSX.Element {
     <Flex column style={{ margin: 'auto' }}>
       <Header>
         <Title level={2}>Previous registrations</Title>
-        <p>
+        <Flex align justify style={{ fontSize: '0.8em' }}>
           Logged in as {user?.displayName ?? '-'} ({user?.email ?? '-'})
-        </p>
+        </Flex>
       </Header>
       <Flex row>
         <Menu

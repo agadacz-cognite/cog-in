@@ -16,6 +16,7 @@ export const Wrapper = styled.div.attrs((props: TWrapper) => {
   align-items: center;
   background-repeat: repeat;
   background-attachment: fixed;
+  overflow-y: auto;
 `;
 
 export const DevBanner = styled.div`

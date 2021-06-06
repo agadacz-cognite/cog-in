@@ -5,7 +5,7 @@ const Wrapper = styled.span`
   background-color: #f2a3a3;
   margin: 8px;
   padding: 8px;
-  width: 100%;
+  box-sizing: border-box;
   font-weight: bold;
   text-align: center;
 
@@ -15,7 +15,7 @@ const Wrapper = styled.span`
 `;
 
 type Props = { children: React.ReactNode };
-export const InfoLink = (props: Props): JSX.Element => {
+export const InfoBar = (props: Props): JSX.Element => {
   const { children } = props;
   return <Wrapper>{children}</Wrapper>;
 };

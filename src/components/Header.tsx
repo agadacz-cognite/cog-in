@@ -9,9 +9,14 @@ export const Header = styled.div`
   margin: 8px;
   box-sizing: border-box;
   background-color: #fefefe;
+  text-align: center;
 
   p {
     margin: 0;
     color: #aaa;
+  }
+
+  * > {
+    text-align: center;
   }
 `;

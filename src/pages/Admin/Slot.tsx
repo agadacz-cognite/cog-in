@@ -112,7 +112,9 @@ export default function Slot(props: Props): JSX.Element {
         <span style={{ fontWeight: 'bold', minWidth: '90px' }}>
           Available places
         </span>
-        <Flex row justify style={{ flexWrap: 'wrap', width: '100%' }}>
+        <Flex
+          row
+          style={{ flexWrap: 'wrap', width: '100%', marginLeft: '8px' }}>
           {testHours.map((testHour: TestHourInSlot, index: number) => {
             return (
               <Flex

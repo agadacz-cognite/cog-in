@@ -5,4 +5,4 @@ export * from './Table';
 export * from './Header';
 export * from './Loader';
 export * from './LinksBar';
-export * from './InfoLink';
+export * from './InfoBar';

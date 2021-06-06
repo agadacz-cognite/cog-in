@@ -149,9 +149,9 @@ export default function NewRegistration(): JSX.Element {
         <Title level={2} style={{ marginBottom: '4px' }}>
           Open registration for new week
         </Title>
-        <p>
+        <Flex align justify style={{ fontSize: '0.8em' }}>
           Logged in as {user?.displayName ?? '-'} ({user?.email ?? '-'})
-        </p>
+        </Flex>
       </Header>
       <Flex row justify style={{ flexWrap: 'wrap' }}>
         <Flex column>
