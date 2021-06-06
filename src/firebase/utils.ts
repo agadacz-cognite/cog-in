@@ -202,7 +202,7 @@ export const registerUserForTest = async (
         .then(() => {
           notification.success({
             message: 'Yay!',
-            description: 'You successfully registered for a test!',
+            description: 'You successfully registered!',
           });
           sendEmailToUser(userToRegister, activeRegistration);
           newUserRegistrationTracker(userToRegister?.email, translatedSlots);

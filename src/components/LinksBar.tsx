@@ -37,7 +37,7 @@ export const LinksBar = (): JSX.Element => {
 
   const gitUrl = 'https://github.com/agadacz-cognite/cog-in';
   const mixpanelUrl =
-    'https://eu.mixpanel.com/project/2375253/view/2919913/app/dashboards#id=1076659';
+    'https://eu.mixpanel.com/project/2375253/view/2919913/app/dashboards#id=1102809';
 
   return (
     <Bar>
