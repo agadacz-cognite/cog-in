@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import GeoPattern from 'geopattern';
-import Home from '../Home';
+import Login from '../Login';
 import NotFound from '../NotFound';
 import Admin from '../Admin';
 import NewRegistration from '../Admin/NewRegistration';
@@ -50,7 +50,7 @@ export default function App(): JSX.Element {
       <Router>
         <Switch>
           <Route exact path={oldPaths.login.staticPath}>
-            <Home />
+            <Login />
           </Route>
           <Route exact path={oldPaths.home.staticPath}>
             <DaysSelection />
