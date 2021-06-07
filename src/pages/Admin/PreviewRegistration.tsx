@@ -66,7 +66,7 @@ export default function PreviewRegistration(): JSX.Element {
           Week {weekDate}
         </Title>
       </Header>
-      <Flex row align justify style={{ flexWrap: 'wrap' }}>
+      <Flex row justify style={{ flexWrap: 'wrap', alignItems: 'flex-start' }}>
         {!registeredUsersData && <Spin size="large" />}
         {registeredUsersData &&
           registeredUsersData.map((oneSlot: string[][], index: number) => {
