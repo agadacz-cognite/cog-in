@@ -190,7 +190,7 @@ export const getRegistrationsForExcel = async (
           (userTestHour: ChosenHour) => userTestHour.slotId === slotId,
         );
         if (!userInThisSlot) {
-          return ['', '', '', '', ''];
+          return ['', '', '', '', '', ''];
         }
         const registeredHour = slotTestHours.find(
           (slotTestHour: TestHourInSlot) =>
@@ -204,6 +204,7 @@ export const getRegistrationsForExcel = async (
           '',
           '',
           registeredUser.name ?? registeredUser.email,
+          registeredUser.email,
           usersRegisteredHour,
           registeredUser.comment,
         ];
@@ -224,6 +225,7 @@ export const getRegistrationsForExcel = async (
     ...week.slots.map((slot: SlotData) => [
       slot.slotName.toUpperCase(),
       'Name',
+      'Email',
       'Hour',
       'Comment',
       '',
