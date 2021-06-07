@@ -13,7 +13,7 @@ import DaysSelection from '../DaysSelection';
 import HourSelection from '../HourSelection';
 import { AppContext } from '../../context';
 import { Loader, LinksBar } from '../../components';
-import { isDev, oldPaths } from '../../shared';
+import { errorHandler, isDev, oldPaths } from '../../shared';
 import { useMixpanel } from '../../mixpanel';
 import { Wrapper, DevBanner } from './components';
 
@@ -22,6 +22,13 @@ export default function App(): JSX.Element {
   const [background, setBackground] = useState(base64Prefix);
   const { loading, setGapiLoaded } = useContext(AppContext);
   useMixpanel();
+
+  window.addEventListener('error', (event: any) => {
+    errorHandler(`Error: ${event.message}`);
+    if (event.message === 'Script error.') {
+      setGapiLoaded(false);
+    }
+  });
 
   useEffect(() => {
     const script = document.createElement('script');
