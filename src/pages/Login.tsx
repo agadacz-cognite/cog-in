@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Typography, Modal, Button } from 'antd';
+import { Typography, Modal, Button, Spin } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Flex, Panel, InfoBar } from '../components';
 import { AppContext } from '../context';
@@ -12,15 +12,8 @@ const { Title } = Typography;
 export default function Login(): JSX.Element {
   const history = useHistory();
   const { user, setUser, gapiLoaded } = useContext(AppContext);
-  const [canLoad, setCanLoad] = useState(true);
 
   const GOOGLE_BUTTON_ID = 'google-sign-in-button';
-
-  useEffect(() => {
-    if (!navigator.cookieEnabled) {
-      setCanLoad(false);
-    }
-  }, [navigator]);
 
   useEffect(() => {
     if (user) {
@@ -38,9 +31,6 @@ export default function Login(): JSX.Element {
         theme: 'dark',
         onsuccess: onSignIn,
       });
-      setCanLoad(true);
-    } else {
-      setCanLoad(false);
     }
   }, [gapiLoaded]);
 
@@ -70,7 +60,14 @@ export default function Login(): JSX.Element {
     });
   };
 
-  if (!canLoad) {
+  if (gapiLoaded === undefined) {
+    return (
+      <Flex>
+        <Spin size="large" />
+      </Flex>
+    );
+  }
+  if (gapiLoaded === false) {
     return <ErrorPage />;
   }
   return (

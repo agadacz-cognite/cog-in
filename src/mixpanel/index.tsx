@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import mixpanel from 'mixpanel-browser';
-import { isDev } from '../shared';
+import { errorHandler, isDev } from '../shared';
 
 export const useMixpanel = (): void => {
   const [mixpanelLoaded, setMixpanelLoaded] = useState(false);
@@ -9,8 +9,13 @@ export const useMixpanel = (): void => {
     if (!token || mixpanelLoaded) {
       return;
     }
-    mixpanel.init(token, { api_host: 'https://api-eu.mixpanel.com' }, '');
-    setMixpanelLoaded(true);
+    try {
+      mixpanel.init(token, { api_host: 'https://api-eu.mixpanel.com' }, '');
+      setMixpanelLoaded(true);
+    } catch (error) {
+      errorHandler(error);
+      setMixpanelLoaded(false);
+    }
   }, []);
 };
 

@@ -26,12 +26,14 @@ export default function App(): JSX.Element {
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://apis.google.com/js/platform.js';
-
-    script.onload = () => {
+    script.onload = () =>
       (window as any).gapi.load('client', () => {
-        setGapiLoaded(true);
+        if ((window as any).gapi?.client) {
+          setGapiLoaded(true);
+        } else {
+          setGapiLoaded(false);
+        }
       });
-    };
     document.body.appendChild(script);
   }, []);
 

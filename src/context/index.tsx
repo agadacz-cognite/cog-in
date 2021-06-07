@@ -3,7 +3,7 @@ import { RegistrationData, FixedSlotData, RegisteredUser } from '../shared';
 
 type ContextType = {
   loading: boolean;
-  gapiLoaded: boolean;
+  gapiLoaded: boolean | undefined;
   user: any;
   isUserAdmin: boolean;
   activeRegistration: RegistrationData | undefined;
@@ -13,7 +13,7 @@ type ContextType = {
   canPreregister: boolean;
   previousWeeks: RegistrationData[] | undefined;
   setLoading: (loading: boolean) => void;
-  setGapiLoaded: (gapi: boolean) => void;
+  setGapiLoaded: (gapi: boolean | undefined) => void;
   setUser: (user: any) => void;
   setIsUserAdmin: (isUserAdmin: boolean) => void;
   setActiveRegistration: (week: RegistrationData | undefined) => void;
@@ -28,7 +28,7 @@ export const AppContext = React.createContext({} as ContextType);
 
 const AppContextProvider = ({ children }: { children: any }): JSX.Element => {
   const [loading, setLoading] = useState(false);
-  const [gapiLoaded, setGapiLoaded] = useState(false);
+  const [gapiLoaded, setGapiLoaded] = useState<boolean | undefined>(undefined);
   const [user, setUser] = useState();
   const [isUserAdmin, setIsUserAdmin] = useState<boolean>(false);
   const [days, setDays] = useState<string[]>([]);
