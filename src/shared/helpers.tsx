@@ -7,6 +7,7 @@ import {
   ChosenHour,
   TestHourInSlot,
 } from './types';
+import { generalErrorTracker } from '../mixpanel';
 import { eventTitle } from '../shared';
 
 export const randomFarAwayDate = new Date(1934832714000);
@@ -17,6 +18,7 @@ export const randomFarAwayDate = new Date(1934832714000);
  */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const errorHandler = (error: any): void => {
+  generalErrorTracker(undefined, error);
   notification.error({
     message: 'Something went wrong.',
     description: (

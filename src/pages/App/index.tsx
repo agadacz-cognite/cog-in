@@ -13,22 +13,27 @@ import DaysSelection from '../DaysSelection';
 import HourSelection from '../HourSelection';
 import { AppContext } from '../../context';
 import { Loader, LinksBar } from '../../components';
-import { errorHandler, isDev, oldPaths } from '../../shared';
-import { useMixpanel } from '../../mixpanel';
+import { isDev, oldPaths } from '../../shared';
+import { useMixpanel, gapiLoadedTracker } from '../../mixpanel';
 import { Wrapper, DevBanner } from './components';
 
 export default function App(): JSX.Element {
   const base64Prefix = 'data:image/svg+xml;base64,';
   const [background, setBackground] = useState(base64Prefix);
-  const { loading, setGapiLoaded } = useContext(AppContext);
+  const { loading, gapiLoaded, setGapiLoaded } = useContext(AppContext);
   useMixpanel();
 
   window.addEventListener('error', (event: any) => {
-    errorHandler(`Error: ${event.message}`);
     if (event.message === 'Script error.') {
       setGapiLoaded(false);
     }
   });
+
+  useEffect(() => {
+    if (typeof gapiLoaded === 'boolean') {
+      gapiLoadedTracker(gapiLoaded);
+    }
+  }, [gapiLoaded]);
 
   useEffect(() => {
     const script = document.createElement('script');
