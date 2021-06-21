@@ -1,9 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Button, Typography, Spin, Tooltip, notification } from 'antd';
 import { WarningOutlined } from '@ant-design/icons';
 import {
-  AppContext,
   useBackIfNotAdmin,
   useBackIfNotLogged,
   useActiveRegistration,
@@ -21,7 +20,6 @@ const { Title } = Typography;
 export default function PreviewRegistration(): JSX.Element {
   const history = useHistory();
   const { weekId } = useParams<{ weekId: string }>();
-  const { activeRegistration } = useContext(AppContext);
   const [registeredUsersData, setRegisteredUsersData] = useState([]);
   const [weekDate, setWeekDate] = useState('');
   const [weekDays, setWeekDays] = useState([]);
@@ -54,10 +52,8 @@ export default function PreviewRegistration(): JSX.Element {
   const onBack = () => history.push(oldPaths.admin.path());
 
   useEffect(() => {
-    if (activeRegistration) {
-      getRegisteredUsers();
-    }
-  }, [activeRegistration]);
+    getRegisteredUsers();
+  }, []);
 
   return (
     <Flex column style={{ margin: 'auto' }}>
